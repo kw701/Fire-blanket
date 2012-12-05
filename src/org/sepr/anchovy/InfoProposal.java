@@ -8,9 +8,9 @@ public class InfoProposal {
 	
 	public static void main(String args[]) {
 		namedValues.add(new Pair<Integer>("test", 1));
-		namedValues.add(new Pair<Integer>("test", 2));
-		namedValues.add(new Pair<Integer>("test", 3));
-		namedValues.add(new Pair<Integer>("test", 4));
+		namedValues.add(new Pair<Double>("test", 2.0));
+		namedValues.add(new Pair<String>("test", "potato"));
+		namedValues.add(new Pair<ArrayList<Integer>>("test", new ArrayList<Integer>(3)));
 		
 		System.out.println(namedValues);
 	}
