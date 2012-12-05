@@ -3,8 +3,8 @@ package org.sepr.anchovy;
 /**
  * Pair<T> represents any <String, Object> pair 
  * 
- * @author andrei	Written and committed the class
- * @param <T>		An object type
+ * @author Andrei
+ * @param <T> -- an object type
  */
 
 public class Pair<T> {
