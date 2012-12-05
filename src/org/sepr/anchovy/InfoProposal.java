@@ -8,13 +8,16 @@ public class InfoProposal {
 	 */
 	public static ArrayList<Pair<?>> namedValues = new ArrayList<Pair<?>>();
 	
-	// TODO: must think what other stuff we need in this method
-	// 		don't forget, though, it has to be as lightweight and flexible
-	//		as possible
+	// TODO: must think what other stuff we need in this method;
+	// 			don't forget, though, it has to be as lightweight and
+	//			flexible as possible
 	
 	
 	/**
-	 * Sandbox - free for all :)
+	 * Sand box:
+	 * <li>			feel free to use Pair constructs here
+	 * <li>			run in Debug (F11)
+	 * <li> 		also give Pair.Label, the enum, a try
 	 */
 	public static void main(String args[]) {
 		// adding an integer to the Info object
@@ -24,7 +27,7 @@ public class InfoProposal {
 		namedValues.add(new Pair<Double>("test", 2.0));
 		
 		// adding a String 
-		namedValues.add(new Pair<String>("test", "potato"));
+		namedValues.add(new Pair<String>(Pair.Label.pres.toString(), "potato"));
 		
 		// adding an ArrayList
 		namedValues.add(new Pair<ArrayList<Integer>>("test", new ArrayList<Integer>(3)));
