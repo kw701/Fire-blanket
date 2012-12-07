@@ -15,6 +15,15 @@ public class Pair<T> {
 	public static enum Label {
 		temp("temperature"),
 		pres("pressure"),
+		coRL("controll rod level"),
+		wLvl("water level"),
+		pRPM("revolutions per minute"),
+		psit("position"),
+		name("name of component"),
+		falT("failuerTime"),
+		outP("output flow rate"),
+		oPto("outputs to"),
+		rcIF("recieves input from"),
 		etc("feel free to add more stuff;" +
 				"it should have the enum term 4-char long to keep the convention");
 		
