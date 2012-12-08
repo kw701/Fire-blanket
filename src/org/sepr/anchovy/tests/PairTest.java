@@ -13,8 +13,7 @@ public class PairTest {
 	@Test
 	public void testFirst() {
 		Pair<Double> testPair = new Pair<Double>(testFirst, testSecond);
-		assertEquals(testFirst.name(), testPair.first());
-		fail("First " + testFirst.name()  + " did not match " + testPair.first());
+		assertEquals(testFirst.toString(), testPair.first());
 				
 	}
 	
@@ -22,14 +21,12 @@ public class PairTest {
 	public void testSecond(){
 		Pair<Double> testPair = new Pair<Double>(testFirst, testSecond);
 		assertEquals(testSecond, testPair.second());
-		fail("Second did not match");
 	}
 	
 	@Test
 	public void testString(){
 		Pair<Double> testPair = new Pair<Double>(testFirst, testSecond);
 		assertEquals(testString, testPair.toString());
-		fail("Strings did not match");
 	}
 
 }
