@@ -21,23 +21,23 @@ public class InfoProposal {
 	 */
 	public static void main(String args[]) {
 		// adding an integer to the Info object
-		namedValues.add(new Pair<Integer>("test", 1));
+		namedValues.add(new Pair<Integer>(Pair.Label.pRPM, 1));
 		
 		// adding a double value
-		namedValues.add(new Pair<Double>("test", 2.0));
+		namedValues.add(new Pair<Double>(Pair.Label.coRL, 2.0));
 		
 		// adding a String 
-		namedValues.add(new Pair<String>(Pair.Label.pres.toString(), "potato"));
+		namedValues.add(new Pair<String>(Pair.Label.pres, "potato"));
 		
 		// adding an ArrayList
-		namedValues.add(new Pair<ArrayList<Integer>>("test", new ArrayList<Integer>(3)));
+		namedValues.add(new Pair<ArrayList<Integer>>(Pair.Label.etc, new ArrayList<Integer>(3)));
 		
 		// defining an ArrayList with words and adding it to this Info object
 		ArrayList<String> words = new ArrayList<String>();
 		words.add("meow");
 		words.add("cow");
 		words.add("pixels");
-		Pair<ArrayList<String>> x = new Pair<ArrayList<String>>("words", words);
+		Pair<ArrayList<String>> x = new Pair<ArrayList<String>>(Pair.Label.etc, words);
 		
 		namedValues.add(x);
 		

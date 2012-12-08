@@ -13,18 +13,18 @@ public class Pair<T> {
 	 * More information about Java enums: http://docs.oracle.com/javase/tutorial/java/javaOO/enum.html
 	 */
 	public static enum Label {
-		temp("temperature"),
-		pres("pressure"),
-		coRL("controll rod level"),
-		wLvl("water level"),
-		pRPM("revolutions per minute"),
-		psit("position"),
-		name("name of component"),
-		falT("failuerTime"),
-		outP("output flow rate"),
-		oPto("outputs to"),
-		rcIF("recieves input from"),
-		etc("feel free to add more stuff;" +
+		temp("Temperature"),
+		pres("Pressure"),
+		coRL("Controll rod level"),
+		wLvl("Water level"),
+		pRPM("Revolutions per minute"),
+		psit("Position"),
+		cNme("Name of component"),
+		falT("FailuerTime"),
+		outP("Output flow rate"),
+		oPto("Outputs to"),
+		rcIF("Recieves input from"),
+		etc("Feel free to add more stuff;" +
 				"it should have the enum term 4-char long to keep the convention");
 		
 		// if needed we can add more info about labels (i.e. new fields)
@@ -55,8 +55,8 @@ public class Pair<T> {
 	 * @param name
 	 * @param val
 	 */
-	Pair(String name, T val) {
-		this.first = name;
+	public Pair(Label typeVal, T val) {
+		this.first = typeVal.name;
 		this.second = val;
 	}
 	
@@ -93,7 +93,7 @@ public class Pair<T> {
 	 * Sandbox to check functionality. Remember to remove this main
 	 */
 	public static void main(String args[]) {
-		Pair<Integer> a = new Pair<Integer>("temperature", 100);
+		Pair<Integer> a = new Pair<Integer>(Label.temp, 100);
 		
 		System.out.println(a);
 		
