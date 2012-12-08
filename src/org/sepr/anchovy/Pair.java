@@ -21,7 +21,7 @@ public class Pair<T> {
 		psit("Position"),
 		cNme("Name of component"),
 		falT("FailuerTime"),
-		outP("Output flow rate"),
+		OPFL("Output flow rate"),
 		oPto("Outputs to"),
 		rcIF("Recieves input from"),
 		etc("Feel free to add more stuff;" +
@@ -39,7 +39,7 @@ public class Pair<T> {
 			return this.name;
 		}
 	}
-
+	private Label label;
 	/**
 	 * The label: this is a string that identifies what kind of value this Pair holds 
 	 */
@@ -56,10 +56,11 @@ public class Pair<T> {
 	 * @param val
 	 */
 	public Pair(Label typeVal, T val) {
+		this.label = typeVal;
 		this.first = typeVal.name;
 		this.second = val;
 	}
-	
+	public Label getLabel(){return label;}
 	/**
 	 * Returns the label, i.e. the first element of the pair
 	 * @return String first == a string from Pair.Label

@@ -12,7 +12,6 @@ public class InfoProposal {
 	// 			don't forget, though, it has to be as lightweight and
 	//			flexible as possible
 	
-	
 	/**
 	 * Sand box:
 	 * <li>			feel free to use Pair constructs here
