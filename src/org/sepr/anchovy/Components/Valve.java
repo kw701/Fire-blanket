@@ -86,9 +86,7 @@ public class Valve extends Component {
 			switch (label){
 			case psit:
 				position = (Boolean) pair.second();
-				break;
-			default:
-				throw new Exception("Something was in this pair that should have been");		
+				break;	
 			}
 		}
 	}
