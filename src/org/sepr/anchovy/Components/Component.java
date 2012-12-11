@@ -1,9 +1,11 @@
-package org.sepr.anchovy;
+package org.sepr.anchovy.Components;
 
 import java.util.Iterator;
 import java.util.Random;
 import java.util.ArrayList;
 
+import org.sepr.anchovy.InfoProposal;
+import org.sepr.anchovy.Pair;
 import org.sepr.anchovy.Pair.Label;
 
 public abstract class Component {
@@ -13,7 +15,10 @@ public abstract class Component {
 	private Double outputFlowRate;
 	private ArrayList<Component> outputsTo;
 	private ArrayList<Component> recievesInputFrom;
-	
+	/*
+	 * Setup the component
+	 * @param name the name of the individual component, should be unique.
+	 */
 	public Component(String name){
 		this.name = name;
 		if(failureTime == null){
@@ -24,7 +29,7 @@ public abstract class Component {
 	}
 	
 	/*
-	 * Calculates the failure time of the component normaly distributed around the MTBF
+	 * Calculates the failure time of the component normally distributed around the MTBF
 	 */
 	protected void calcRandomFailTime(){
 		Random rand = new Random();
@@ -38,7 +43,10 @@ public abstract class Component {
 	public void repair(){
 		calcRandomFailTime();
 	}
-	
+	/*
+	 * Create an information packet for the attributes of the general component
+	 * @return info an information packet containing; the component name, failure time and output flow rate, output and input comonents
+	 */
 	protected InfoProposal getSuperInfo(){
 		InfoProposal info = new InfoProposal();
 		info.namedValues.add(new Pair<String>(Label.cNme, name));
@@ -58,6 +66,37 @@ public abstract class Component {
 		}
 		return info;
 	}
+	protected void takeSuperInfo(InfoProposal info){
+		resetConections();
+		Iterator<Pair<?>> i = info.namedValues.iterator();
+		Pair<?> pair = null;
+		Label label = null;
+		while(i.hasNext()){
+			pair = i.next();
+			label = pair.getLabel();
+			switch (label){
+			case cNme:
+				setName((String) pair.second());
+				break;
+			case falT:
+				setFailureTime((Double) pair.second());
+				break;
+			case oPto:
+				connectToOutput((Component) pair.second());// TODO this needs working out! may need to find component from a general list of all components
+				break;
+			case rcIF:
+				connectToInput((Component) pair.second()); // TODO this needs working out! may need to find component from a general list of all components
+				break;
+			case OPFL:
+				setOuputFlowRate((Double) pair.second());	
+				break;
+			}
+		}
+	}
+	
+	/*
+	 * clears the lists of components inputing into this component and which this component outputs to.
+	 */
 	protected void resetConections(){
 		outputsTo.clear();
 		recievesInputFrom.clear();
@@ -66,9 +105,15 @@ public abstract class Component {
 		this.name = name;
 	}
 	public String getName(){ return name;}
+	/*
+	 * @param  component add the given component the the lists of components that this component outputs to.
+	 */
 	public void connectToOutput(Component component){
 		outputsTo.add(component);
 	}
+	/*
+	 * @param component add the given component to the list of components that this component receives an input form
+	 */
 	public void connectToInput(Component component){
 		recievesInputFrom.add(component);
 	}
@@ -78,6 +123,10 @@ public abstract class Component {
 	public double getOutputFlowRate(){
 		return outputFlowRate;
 	}
+	/*
+	 * Create an info packet for the component - should call super.getSuperInfo()
+	 * @return info an info packet containing all attributes for the component
+	 */
 	public abstract InfoProposal getInfo();
 	/*
 	 * By having a single calculate method, any component can be told to calculate
@@ -86,8 +135,11 @@ public abstract class Component {
 	 */
 	public abstract void calucalte();
 	protected abstract double calculateOutputFlowRate();
-	
-	public abstract void takeInfo(InfoProposal info);
+	/*
+	 * Sets all attributes of a component using the given info packet
+	 * @param info info packet used to set vaules for all appributes of the component
+	 */
+	public abstract void takeInfo(InfoProposal info) throws Exception;
 
 	public int getMeanTimeBetweenFailure() {
 		return meanTimeBetweenFailure;

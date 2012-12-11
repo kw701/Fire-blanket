@@ -1,6 +1,9 @@
-package org.sepr.anchovy;
+package org.sepr.anchovy.Components;
 
 import java.util.Iterator;
+
+import org.sepr.anchovy.InfoProposal;
+import org.sepr.anchovy.Pair;
 import org.sepr.anchovy.Pair.Label;
 
 public class Reactor extends Component {
@@ -31,21 +34,25 @@ public class Reactor extends Component {
 		super.setOuputFlowRate(calculateOutputFlowRate());
 	}
 	protected double calculateTemperature(){
+		// TODO work out what this calculation should do
 		return 0;
 	}
 	protected double calcuatePressure(){
+		// TODO work out what this calculation should do
 		return 0;
 	}
 	protected double calculateWaterLevel(){
+		// TODO work out what this calculation should do
 		return 0;	
 	}
 	@Override
 	protected double calculateOutputFlowRate(){
+		// TODO work out what this calculation should do
 		return 0;
 	}
 	@Override
-	public void takeInfo(InfoProposal info) {
-		super.resetConections();
+	public void takeInfo(InfoProposal info) throws Exception {
+		super.takeSuperInfo(info);
 		Iterator<Pair<?>> i = info.namedValues.iterator();
 		Pair<?> pair = null;
 		Label label = null;
@@ -53,29 +60,21 @@ public class Reactor extends Component {
 			pair = i.next();
 			label = pair.getLabel();
 			switch (label){
-			case cNme:
-				super.setName((String) pair.second());
-			case falT:
-				super.setFailureTime( (Double) pair.second());
-			case oPto:
-				super.connectToOutput((Component) pair.second());
-			case rcIF:
-				super.connectToInput((Component) pair.second());
-			case OPFL:
-				super.setOuputFlowRate((Double) pair.second());
 			case temp:
 				temperature = (Double) pair.second();
+				break;
 			case pres:
 				pressure = (Double) pair.second();
+				break;
 			case coRL:
 				controlRodLevel = (Double) pair.second();
+				break;
 			case wLvl:
 				waterLevel = (Double) pair.second();
+				break;
 			default:
-				
-			
+				throw new Exception("Something was in this pair that should have been");		
 			}
-		
 		}
 	}
 }

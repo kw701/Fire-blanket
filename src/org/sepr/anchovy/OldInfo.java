@@ -1,5 +1,7 @@
 package org.sepr.anchovy;
 
+import org.sepr.anchovy.Components.Component;
+
 public class OldInfo {
 	
 	private String componentName;
