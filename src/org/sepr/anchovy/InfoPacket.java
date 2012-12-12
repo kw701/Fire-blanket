@@ -2,7 +2,7 @@ package org.sepr.anchovy;
 
 import java.util.ArrayList;
 
-public class InfoProposal {
+public class InfoPacket {
 	/**
 	 * ArrayList containing the data == (string, value) pairs
 	 */
@@ -20,7 +20,7 @@ public class InfoProposal {
 	 */
 	public static void main(String args[]) {
 		// adding an integer to the Info object
-		InfoProposal i = new InfoProposal();
+		InfoPacket i = new InfoPacket();
 		i.namedValues.add(new Pair<Integer>(Pair.Label.pRPM, 1));
 		
 		// adding a double value

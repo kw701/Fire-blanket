@@ -6,7 +6,7 @@ package org.sepr.anchovy.Components;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import org.sepr.anchovy.InfoProposal;
+import org.sepr.anchovy.InfoPacket;
 import org.sepr.anchovy.Pair;
 import org.sepr.anchovy.Pair.Label;
 
@@ -27,8 +27,8 @@ public class Valve extends Component {
 	 * @see org.sepr.anchovy.Component#getInfo()
 	 */
 	@Override
-	public InfoProposal getInfo() {
-		InfoProposal info = super.getSuperInfo();
+	public InfoPacket getInfo() {
+		InfoPacket info = super.getSuperInfo();
 		info.namedValues.add(new Pair<Boolean>(Label.psit, position));
 		return info;
 	}
@@ -75,7 +75,7 @@ public class Valve extends Component {
 	 * @see org.sepr.anchovy.Component#takeInfo(org.sepr.anchovy.InfoProposal)
 	 */
 	@Override
-	public void takeInfo(InfoProposal info) throws Exception {
+	public void takeInfo(InfoPacket info) throws Exception {
 		super.takeSuperInfo(info);
 		Iterator<Pair<?>> i = info.namedValues.iterator();
 		Pair<?> pair = null;
@@ -94,7 +94,7 @@ public class Valve extends Component {
 	 * sandbox
 	 */
 	public static void main(String[] args){
-		InfoProposal in = new InfoProposal();
+		InfoPacket in = new InfoPacket();
 		in.namedValues.add(new Pair<String>(Label.cNme, "Valve 1"));
 		in.namedValues.add(new Pair<Double>(Label.falT, 1.23));
 		in.namedValues.add(new Pair<Double>(Label.OPFL, 12.34));

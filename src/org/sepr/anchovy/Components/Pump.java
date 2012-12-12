@@ -3,7 +3,7 @@
  */
 package org.sepr.anchovy.Components;
 
-import org.sepr.anchovy.InfoProposal;
+import org.sepr.anchovy.InfoPacket;
 
 /**
  * @author Harrison Spain
@@ -23,7 +23,7 @@ public class Pump extends Component {
 	 * @see org.sepr.anchovy.Components.Component#getInfo()
 	 */
 	@Override
-	public InfoProposal getInfo() {
+	public InfoPacket getInfo() {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -50,7 +50,7 @@ public class Pump extends Component {
 	 * @see org.sepr.anchovy.Components.Component#takeInfo(org.sepr.anchovy.InfoProposal)
 	 */
 	@Override
-	public void takeInfo(InfoProposal info) throws Exception {
+	public void takeInfo(InfoPacket info) throws Exception {
 		// TODO Auto-generated method stub
 
 	}

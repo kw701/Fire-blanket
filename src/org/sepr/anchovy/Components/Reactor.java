@@ -2,7 +2,7 @@ package org.sepr.anchovy.Components;
 
 import java.util.Iterator;
 
-import org.sepr.anchovy.InfoProposal;
+import org.sepr.anchovy.InfoPacket;
 import org.sepr.anchovy.Pair;
 import org.sepr.anchovy.Pair.Label;
 
@@ -17,8 +17,8 @@ public class Reactor extends Component {
 	}
 
 	@Override
-	public InfoProposal getInfo() {
-		InfoProposal info = getSuperInfo();
+	public InfoPacket getInfo() {
+		InfoPacket info = getSuperInfo();
 		info.namedValues.add(new Pair<Double>(Label.temp, temperature));
 		info.namedValues.add(new Pair<Double>(Label.pres, pressure));
 		info.namedValues.add(new Pair<Double>(Label.coRL, controlRodLevel));
@@ -51,7 +51,7 @@ public class Reactor extends Component {
 		return 0;
 	}
 	@Override
-	public void takeInfo(InfoProposal info) throws Exception {
+	public void takeInfo(InfoPacket info) throws Exception {
 		super.takeSuperInfo(info);
 		Iterator<Pair<?>> i = info.namedValues.iterator();
 		Pair<?> pair = null;

@@ -4,7 +4,7 @@ import java.util.Iterator;
 import java.util.Random;
 import java.util.ArrayList;
 
-import org.sepr.anchovy.InfoProposal;
+import org.sepr.anchovy.InfoPacket;
 import org.sepr.anchovy.Pair;
 import org.sepr.anchovy.Pair.Label;
 
@@ -47,8 +47,8 @@ public abstract class Component {
 	 * Create an information packet for the attributes of the general component
 	 * @return info an information packet containing; the component name, failure time and output flow rate, output and input comonents
 	 */
-	protected InfoProposal getSuperInfo(){
-		InfoProposal info = new InfoProposal();
+	protected InfoPacket getSuperInfo(){
+		InfoPacket info = new InfoPacket();
 		info.namedValues.add(new Pair<String>(Label.cNme, name));
 		info.namedValues.add(new Pair<Double>(Label.falT, failureTime));
 		info.namedValues.add(new Pair<Double>(Label.OPFL, outputFlowRate));
@@ -66,7 +66,7 @@ public abstract class Component {
 		}
 		return info;
 	}
-	protected void takeSuperInfo(InfoProposal info){
+	protected void takeSuperInfo(InfoPacket info){
 		resetConections();
 		Iterator<Pair<?>> i = info.namedValues.iterator();
 		Pair<?> pair = null;
@@ -127,7 +127,7 @@ public abstract class Component {
 	 * Create an info packet for the component - should call super.getSuperInfo()
 	 * @return info an info packet containing all attributes for the component
 	 */
-	public abstract InfoProposal getInfo();
+	public abstract InfoPacket getInfo();
 	/*
 	 * By having a single calculate method, any component can be told to calculate
 	 * Without the rest of the program explicitly knowing what type of component it is.
@@ -139,7 +139,7 @@ public abstract class Component {
 	 * Sets all attributes of a component using the given info packet
 	 * @param info info packet used to set vaules for all appributes of the component
 	 */
-	public abstract void takeInfo(InfoProposal info) throws Exception;
+	public abstract void takeInfo(InfoPacket info) throws Exception;
 
 	public int getMeanTimeBetweenFailure() {
 		return meanTimeBetweenFailure;
