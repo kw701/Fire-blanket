@@ -6,13 +6,13 @@ package org.sepr.anchovy.Components;
 import org.sepr.anchovy.InfoPacket;
 
 /**
- * @author Harrison Spain
+ * @author Harrison
  *
  */
 public class Pump extends Component {
 
 	/**
-	 * @param name
+	 * @param name the unique name of the component
 	 */
 	public Pump(String name) {
 		super(name);

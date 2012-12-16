@@ -5,6 +5,9 @@ import org.sepr.anchovy.Pair.Label;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Timer;
+import java.util.TimerTask;
+
 import org.sepr.anchovy.io.*;
 public class GameEngine {
 	ArrayList<Component> powrPlntComponents = null;
@@ -17,6 +20,27 @@ public class GameEngine {
 	public GameEngine(){
 		powrPlntComponents = new ArrayList<Component>();
 		ui = new UI(this);
+		
+		final Timer gameLoop = new Timer();
+		gameLoop.scheduleAtFixedRate(new TimerTask(){
+			boolean stop = false;
+			long timesRoundLoop = 0;
+			
+			public void run(){
+				timesRoundLoop++;
+				if(timesRoundLoop > 10){
+					stop = true;
+				}
+				if(!stop){
+					System.out.println("Hello");
+					runSimulation();
+				}else{
+					gameLoop.cancel();
+				}
+				
+			}
+		}, 0, 1000);
+		
 	}
 	/*
 	 * Sends an info packet a component
@@ -63,6 +87,14 @@ public class GameEngine {
 			com.takeInfo(info);
 		}
 	}
+	public void runSimulation(){
+		Iterator<Component> ci = powrPlntComponents.iterator();
+		Component comp = null;
+		while(ci.hasNext()){
+			comp = ci.next();
+			comp.calucalte();
+		}
+	}
 	/*
 	 * Add a component to the list of components
 	 * @param component the component to be added to the list of components
@@ -70,6 +102,7 @@ public class GameEngine {
 	public void addComponent(Component component){
 		powrPlntComponents.add(component);
 	}
+	
 	
 	/*
 	 * Connect two components together
@@ -84,10 +117,24 @@ public class GameEngine {
 			comp1.connectToOutput(comp2);
 		}
 	}
+	
+	public InfoPacket[] getAllComponentInfo(){
+		ArrayList<InfoPacket> allInfo = new ArrayList<InfoPacket>();
+		Iterator<Component> ci = powrPlntComponents.iterator();
+		Component comp = null;
+		while(ci.hasNext()){
+			comp = ci.next();
+			allInfo.add(comp.getInfo());
+		}
+		return (InfoPacket[]) allInfo.toArray();
+		
+	}
 	/*
-	 * This will be the main method for the game.
+	 * The main method for the game
+	 * 
 	 */
 	public static void main(String[] args){
 		// TODO create the main game loop
+		GameEngine game = new GameEngine();
 	}
 }
