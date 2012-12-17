@@ -73,7 +73,7 @@ public class Reactor extends Component {
 				waterLevel = (Double) pair.second();
 				break;
 			default:
-				throw new Exception("Something was in this pair that should have been");		
+				// should this do anything by default?
 			}
 		}
 	}

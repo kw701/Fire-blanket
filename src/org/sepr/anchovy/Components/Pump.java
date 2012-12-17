@@ -3,20 +3,24 @@
  */
 package org.sepr.anchovy.Components;
 
+import java.util.Iterator;
+
 import org.sepr.anchovy.InfoPacket;
+import org.sepr.anchovy.Pair;
+import org.sepr.anchovy.Pair.Label;
 
 /**
  * @author Harrison
  *
  */
 public class Pump extends Component {
-
+	private double RPM;
+	
 	/**
 	 * @param name the unique name of the component
 	 */
 	public Pump(String name) {
 		super(name);
-		// TODO Auto-generated constructor stub
 	}
 
 	/* (non-Javadoc)
@@ -24,7 +28,8 @@ public class Pump extends Component {
 	 */
 	@Override
 	public InfoPacket getInfo() {
-		// TODO Auto-generated method stub
+		InfoPacket info = super.getSuperInfo();
+		info.namedValues.add(new Pair<Double> (Label.pRPM, RPM));
 		return null;
 	}
 
@@ -33,8 +38,7 @@ public class Pump extends Component {
 	 */
 	@Override
 	public void calucalte() {
-		// TODO Auto-generated method stub
-
+		super.setOuputFlowRate(calculateOutputFlowRate());
 	}
 
 	/* (non-Javadoc)
@@ -42,8 +46,7 @@ public class Pump extends Component {
 	 */
 	@Override
 	protected double calculateOutputFlowRate() {
-		// TODO Auto-generated method stub
-		return 0;
+		return 0; // TODO should be based on the RPM of the pump
 	}
 
 	/* (non-Javadoc)
@@ -51,8 +54,18 @@ public class Pump extends Component {
 	 */
 	@Override
 	public void takeInfo(InfoPacket info) throws Exception {
-		// TODO Auto-generated method stub
-
+		super.takeSuperInfo(info);
+		Iterator<Pair<?>> i = info.namedValues.iterator();
+		Pair<?> pair = null;
+		Label label = null;
+		while(i.hasNext()){
+			pair = i.next();
+			label = pair.getLabel();
+			switch (label){
+			case pRPM:
+				RPM = (Double) pair.second();
+			}
+		}
 	}
 
 }
