@@ -70,7 +70,7 @@ public class InfoPacketTest {
 				attExist[2] = true;
 				break;
 			case wLvl:
-				val = (Double) pair.second();	
+				val = (Double) pair.second();
 				assertEquals("Water Level did was not correct", new Double(45.67), val);
 				attExist[3] = true;
 				break;
