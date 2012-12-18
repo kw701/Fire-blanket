@@ -1,6 +1,6 @@
 package org.sepr.anchovy;
 
-import org.sepr.anchovy.Components.Component;
+import org.sepr.anchovy.Components.*;
 import org.sepr.anchovy.Pair.Label;
 
 import java.util.ArrayList;
@@ -21,6 +21,7 @@ public class GameEngine {
 		powrPlntComponents = new ArrayList<Component>();
 		ui = new UI(this);
 		
+		/*
 		final Timer gameLoop = new Timer();
 		gameLoop.scheduleAtFixedRate(new TimerTask(){
 			boolean stop = false;
@@ -40,7 +41,7 @@ public class GameEngine {
 				
 			}
 		}, 0, 1000);
-		
+		*/
 	}
 	/*
 	 * Sends an info packet a component
@@ -118,7 +119,7 @@ public class GameEngine {
 		}
 	}
 	
-	public InfoPacket[] getAllComponentInfo(){
+	public ArrayList<InfoPacket> getAllComponentInfo(){
 		ArrayList<InfoPacket> allInfo = new ArrayList<InfoPacket>();
 		Iterator<Component> ci = powrPlntComponents.iterator();
 		Component comp = null;
@@ -126,7 +127,7 @@ public class GameEngine {
 			comp = ci.next();
 			allInfo.add(comp.getInfo());
 		}
-		return (InfoPacket[]) allInfo.toArray();
+		return allInfo;
 		
 	}
 	/*
@@ -136,5 +137,7 @@ public class GameEngine {
 	public static void main(String[] args){
 		// TODO create the main game loop
 		GameEngine game = new GameEngine();
+		game.addComponent(new Valve("Valve 1"));
+		ArrayList<InfoPacket> info = game.getAllComponentInfo();
 	}
 }
