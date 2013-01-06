@@ -21,7 +21,7 @@ public class InfoPacket {
 	public static void main(String args[]) {
 		// adding an integer to the Info object
 		InfoPacket i = new InfoPacket();
-		i.namedValues.add(new Pair<Integer>(Pair.Label.pRPM, 1));
+		i.namedValues.add(new Pair<Integer>(Pair.Label.RPMs, 1));
 		
 		// adding a double value
 		i.namedValues.add(new Pair<Double>(Pair.Label.coRL, 2.0));

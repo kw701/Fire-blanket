@@ -29,7 +29,7 @@ public class Pump extends Component {
 	@Override
 	public InfoPacket getInfo() {
 		InfoPacket info = super.getSuperInfo();
-		info.namedValues.add(new Pair<Double> (Label.pRPM, RPM));
+		info.namedValues.add(new Pair<Double> (Label.RPMs, RPM));
 		return null;
 	}
 
@@ -62,8 +62,10 @@ public class Pump extends Component {
 			pair = i.next();
 			label = pair.getLabel();
 			switch (label){
-			case pRPM:
+			case RPMs:
 				RPM = (Double) pair.second();
+			default:
+				break;
 			}
 		}
 	}

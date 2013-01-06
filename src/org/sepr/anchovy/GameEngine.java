@@ -62,6 +62,7 @@ public class GameEngine {
 			switch (label){
 			case cNme:
 				compToSendTo = (String) pair.second();
+			default:
 				break;
 			}
 		}

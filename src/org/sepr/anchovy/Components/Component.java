@@ -89,6 +89,7 @@ public abstract class Component {
 				break;
 			case OPFL:
 				setOuputFlowRate((Double) pair.second());	
+			default:
 				break;
 			}
 		}

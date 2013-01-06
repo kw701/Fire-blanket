@@ -56,13 +56,18 @@ public class Condenser extends Component {
 		Label label = null;
 		while(it.hasNext()){
 			pair = it.next();
+			label = pair.getLabel();
 			switch(label){
 			case temp:
 				temperature = (Double) pair.second();
+				break;
 			case pres:
 				pressure = (Double) pair.second();
+				break;
 			case wLvl:
 				waterLevel = (Double) pair.second();
+			default:
+				break;
 			}
 		}
 		

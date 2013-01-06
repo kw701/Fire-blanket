@@ -17,7 +17,7 @@ public class Pair<T> {
 		pres("Pressure"),
 		coRL("Controll rod level"),
 		wLvl("Water level"),
-		pRPM("Revolutions per minute"),
+		RPMs("Revolutions per minute"),
 		psit("Position"),
 		cNme("Name of component"),
 		falT("FailuerTime"),

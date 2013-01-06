@@ -60,6 +60,8 @@ public class Generator extends Component {
 			switch (label){
 			case elec:
 				electrisityGenerated = (Double) pair.second();
+			default:
+				break;
 			}
 		}
 
