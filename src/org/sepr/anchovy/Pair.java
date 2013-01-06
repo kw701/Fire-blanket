@@ -24,6 +24,7 @@ public class Pair<T> {
 		OPFL("Output flow rate"),
 		oPto("Outputs to"),
 		rcIF("Recieves input from"),
+		elec("Electrisity Generated"),
 		etc("Feel free to add more stuff;" +
 				"it should have the enum term 4-char long to keep the convention");
 		
