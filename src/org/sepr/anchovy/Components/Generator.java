@@ -67,4 +67,12 @@ public class Generator extends Component {
 
 	}
 
+	public double getElectrisityGenerated() {
+		return electrisityGenerated;
+	}
+
+	public void setElectrisityGenerated(double electrisityGenerated) {
+		this.electrisityGenerated = electrisityGenerated;
+	}
+
 }
