@@ -1,5 +1,6 @@
 package org.sepr.anchovy.Components;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 
 import org.sepr.anchovy.InfoPacket;
@@ -28,27 +29,47 @@ public class Reactor extends Component {
 
 	@Override
 	public void calucalte() {
+		double oldTemp = temperature;
 		temperature = calculateTemperature();
-		pressure = calcuatePressure();
+		pressure = calcuatePressure(oldTemp);
 		waterLevel = calculateWaterLevel();
 		super.setOuputFlowRate(calculateOutputFlowRate());
 	}
+	//Pressure = Temperature * constant <- Pressure Temperature law
 	protected double calculateTemperature(){
-		// TODO work out what this calculation should do
-		return 0;
+		//The temperature is affected by the level of the control rods, current temperature.
+		//Higher control rod level the hotter it gets.
+		double t = temperature;
+		if(t > 100){
+			t = t + t * ((controlRodLevel-50)/2); //If boiling lowering control rod level past 50% decreases temp otherwise it increases.
+		}else{
+			t = t + t * ((controlRodLevel-5)/2); //If not boiling then control rod increases temp unless fully down
+		}
+		return t;
 	}
-	protected double calcuatePressure(){
-		// TODO work out what this calculation should do
-		return 0;
+	protected double calcuatePressure(double oldTemp){
+		// calculate pressure reletive to the current/old temperature
+		double p = pressure;
+		double ratio = temperature/oldTemp;
+		p = p * ratio;
+		return p;
 	}
 	protected double calculateWaterLevel(){
-		// TODO work out what this calculation should do
-		return 0;	
+		//proportional to current water level + opfl and ipfl
+		double inputFlowRate = 0;
+		ArrayList<Component> inputs = super.getRecievesInputFrom();
+		Iterator<Component> it = inputs.iterator();
+		Component c = null;
+		while(it.hasNext()){
+			c = it.next();
+			inputFlowRate += c.getOutputFlowRate();
+		}
+		return (inputFlowRate + waterLevel) - super.getOutputFlowRate();
 	}
 	@Override
 	protected double calculateOutputFlowRate(){
-		// TODO work out what this calculation should do
-		return 0;
+		// OPFL is proportional to the pressure. 
+		return pressure / 2;
 	}
 	@Override
 	public void takeInfo(InfoPacket info) throws Exception {
