@@ -9,7 +9,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-public class PumpTest {
+public class ValveTest {
 	Valve v1 = null;
 	InfoPacket infoTest = null;
 	@Before
