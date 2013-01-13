@@ -9,7 +9,7 @@ import org.sepr.anchovy.Pair.Label;
 
 public class Generator extends Component {
 	private double electrisityGenerated = 0;
-	
+	private double generationRatio = 1.5;
 	public Generator(String name){
 		super(name);
 	}
@@ -32,20 +32,26 @@ public class Generator extends Component {
 	 * The generator is the part of the power plant that generates the electricity
 	 * The output flow rate of the generator is the amount of amount of electisity being generated per cycle.
 	 * 
+	 * The generation of electricity is proportional to the RPM of the turbine attached to it, not the ouput flow rate of the turbines..
+	 * 
 	 * @return amount of electricity generated in current cycle.
 	 */
 	protected double calculateOutputFlowRate() {
 		ArrayList<Component> inputComponents = super.getRecievesInputFrom();
-		double totalInputFlowRate = 0;
+		double totalInputRPM = 0;
 		Iterator<Component> it = inputComponents.iterator();
 		Component comp = null;
+		Turbine turbineIn = null;
 		
 		while(it.hasNext()){
 			comp = it.next();
-			totalInputFlowRate += comp.getOutputFlowRate();
+			if(comp instanceof Turbine){
+				turbineIn = (Turbine) comp;
+				totalInputRPM += turbineIn.getRPM();
+			}
 		}
 		
-		return totalInputFlowRate * 1.5;
+		return totalInputRPM * getGenerationRatio();
 	}
 
 	@Override
@@ -73,6 +79,14 @@ public class Generator extends Component {
 
 	public void setElectrisityGenerated(double electrisityGenerated) {
 		this.electrisityGenerated = electrisityGenerated;
+	}
+
+	public double getGenerationRatio() {
+		return generationRatio;
+	}
+
+	public void setGenerationRatio(double generationRatio) {
+		this.generationRatio = generationRatio;
 	}
 
 }

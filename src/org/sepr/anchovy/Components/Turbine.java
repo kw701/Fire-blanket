@@ -70,6 +70,14 @@ public class Turbine extends Component {
 		}
 	}
 
+	public double getRPM() {
+		return RPM;
+	}
+
+	public void setRPM(double rPM) {
+		RPM = rPM;
+	}
+
 	public double getRPMRatio() {
 		return RPMRatio;
 	}
