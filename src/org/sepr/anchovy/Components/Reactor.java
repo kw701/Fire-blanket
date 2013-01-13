@@ -11,7 +11,7 @@ public class Reactor extends Component {
 	private double temperature;
 	private double pressure;
 	private double controlRodLevel;
-	private double waterLevel;
+	private double waterLevel = 50;
 	
 	public Reactor(String name){
 		super(name);
@@ -98,4 +98,37 @@ public class Reactor extends Component {
 			}
 		}
 	}
+
+	public double getTemperature() {
+		return temperature;
+	}
+
+	public void setTemperature(double temperature) {
+		this.temperature = temperature;
+	}
+
+	public double getPressure() {
+		return pressure;
+	}
+
+	public void setPressure(double pressure) {
+		this.pressure = pressure;
+	}
+
+	public double getControlRodLevel() {
+		return controlRodLevel;
+	}
+
+	public void setControlRodLevel(double controlRodLevel) {
+		this.controlRodLevel = controlRodLevel;
+	}
+
+	public double getWaterLevel() {
+		return waterLevel;
+	}
+
+	public void setWaterLevel(double waterLevel) {
+		this.waterLevel = waterLevel;
+	}
+	
 }
