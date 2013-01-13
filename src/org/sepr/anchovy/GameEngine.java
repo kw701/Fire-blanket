@@ -44,6 +44,129 @@ public class GameEngine {
 		*/
 	}
 	/*
+	 * Using a list of Info Packets (generated from loading the same from file or elsewhere)
+	 * Adds each of the components described in the Info Packet list to the list of components in the power plant
+	 * Then sends the info packet to that component to initialize all its values
+	 * Once all components of the power plant are in the list, they are then all connected together in the way described by the infopackets.
+	 * 
+	 * @param allPowerPlantInfo A list of info packets containing all the information about all components to be put into the power plant.
+	 */
+	public void setupPowerPlantConfigureation(ArrayList<InfoPacket> allPowerPlantInfo){
+		Iterator<InfoPacket> infoIt = allPowerPlantInfo.iterator();
+		InfoPacket currentInfo = null;
+		String currentCompName = null;
+		Component currentNewComponent = null;
+		
+		//Create component list.
+		while(infoIt.hasNext()){
+			currentInfo = infoIt.next();
+			currentCompName = getComponentNameFromInfo(currentInfo);
+			
+			//Determine component types we are dealing with.
+			if(currentCompName.contains("Consenser")){
+				currentNewComponent = new Condenser(currentCompName);
+			}else if(currentCompName.contains("Generator")){
+				currentNewComponent = new Generator(currentCompName);
+			}else if(currentCompName.contains("Pump")){
+				currentNewComponent = new Pump(currentCompName);
+			}else if(currentCompName.contains("Reactor")){
+				currentNewComponent = new Reactor(currentCompName);
+			}else if(currentCompName.contains("Turbine")){
+				currentNewComponent = new Turbine(currentCompName);
+			}else if(currentCompName.contains("Valve")){
+				currentNewComponent = new Valve(currentCompName);
+			}
+			addComponent(currentNewComponent); //add the component to the power plant
+			
+			try {
+				assignInfoToComponent(currentInfo); //send the just added component its info.
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		
+		//Connect components together
+		infoIt = allPowerPlantInfo.iterator();// reset the iterator TODO i think this works.
+		ArrayList<String> inputComponents = null;
+		ArrayList<String> outputComponents = null;
+		
+		Iterator<Pair<?>> pairIt = null;
+		Pair currentPair = null;
+		Label currentLabel = null;
+		
+		Component currentComponent = null;
+		Iterator<Component> compIt = null;
+		
+		Iterator<String> connectionNameIt = null;
+		
+		//get info for each components
+		while(infoIt.hasNext()){
+			currentInfo = infoIt.next();
+			pairIt = currentInfo.namedValues.iterator();
+			
+			//get the useful information out of the info.
+			while(pairIt.hasNext()){
+				currentPair = pairIt.next();
+				currentLabel = currentPair.getLabel();
+		
+				switch (currentLabel){
+				case cNme:
+					currentCompName = (String) currentPair.second();
+					break;
+				case rcIF:
+					inputComponents = (ArrayList<String>) currentPair.second();
+					break;
+				case oPto:
+					outputComponents = (ArrayList<String>) currentPair.second();
+					break;
+				default:
+					break;
+				}
+			}
+			
+			//Get the component that we are going to conect other components to.
+			currentComponent = getPowerPlantComponent(currentCompName);
+			
+			//Attach each input component to the current component.
+			connectionNameIt = inputComponents.iterator();
+			while(connectionNameIt.hasNext()){
+				connectComponentTo(currentComponent, getPowerPlantComponent(connectionNameIt.next()), true);
+			}
+			//Attach each output component to the current compoennt
+			connectionNameIt = outputComponents.iterator();
+			while(connectionNameIt.hasNext()){
+				connectComponentTo(currentComponent, getPowerPlantComponent(connectionNameIt.next()), false);
+			}
+			
+			
+		}
+	}
+	private Component getPowerPlantComponent(String currentCompName) {
+		Component currentComponent = null;
+		Iterator<Component> compIt;
+		compIt = powrPlntComponents.iterator();
+		while(compIt.hasNext()){
+			if(compIt.next().getName() == currentCompName){
+				currentComponent = compIt.next();
+			}
+		}
+		return currentComponent;
+	}
+	private String getComponentNameFromInfo(InfoPacket info){
+		Iterator<Pair<?>> pairIt = info.namedValues.iterator();
+		Pair<?> pair = null;
+		String name = null;
+		while(pairIt.hasNext() && name==null){
+			pair = pairIt.next();
+			if(pair.getLabel() == Label.cNme){
+				name = (String) pair.second();
+			}
+		}
+		return name;
+		
+	}
+	
+	/*
 	 * Sends an info packet a component
 	 * the components is specified by the name of the component in the info packet.
 	 * @param info Info Packet to be sent to a component
@@ -130,6 +253,13 @@ public class GameEngine {
 		}
 		return allInfo;
 		
+	}
+	/*
+	 * Resets the components of the power plant to am empty list.
+	 * Will be needed for loading a power plant from file.
+	 */
+	public void clearPowerPlant(){
+		powrPlntComponents = new ArrayList<Component>();
 	}
 	/*
 	 * The main method for the game
