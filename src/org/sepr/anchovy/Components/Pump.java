@@ -14,6 +14,8 @@ import org.sepr.anchovy.Pair.Label;
  *
  */
 public class Pump extends Component {
+	
+
 	private double RPM;
 	private double pumpFlowRatio = 0.5; // The ratio to which the ouput flow rate is proportional to the RPM of the pump
 	
@@ -78,6 +80,14 @@ public class Pump extends Component {
 
 	public void setPumpFlowRatio(double pumpFlowRatio) {
 		this.pumpFlowRatio = pumpFlowRatio;
+	}
+	
+	public double getRPM() {
+		return RPM;
+	}
+
+	public void setRPM(double rPM) {
+		RPM = rPM;
 	}
 
 }
