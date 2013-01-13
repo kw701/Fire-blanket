@@ -1,5 +1,6 @@
 package org.sepr.anchovy.Components;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 
 import org.sepr.anchovy.InfoPacket;
@@ -8,6 +9,7 @@ import org.sepr.anchovy.Pair.Label;
 
 public class Turbine extends Component {
 	private double RPM;
+	private double RPMRatio = 0.5; //Ratio governing how much of the steam flow transfers to rpm
 	
 	public Turbine(String name) {
 		super(name);
@@ -27,13 +29,27 @@ public class Turbine extends Component {
 		super.setOuputFlowRate(calculateOutputFlowRate());
 	}
 	protected double calculateRPM(){
-		return 0;
+		//RPM is proportional to the input flow rate of steam into the turbine.
+		return getTotalInputFlowRate() / RPMRatio;
 	}
+
+	private double getTotalInputFlowRate() {
+		ArrayList<Component> inputs = super.getRecievesInputFrom();
+		Iterator<Component> it = inputs.iterator();
+		Component c = null;
+		
+		double totalIPFL = 0;
+		while(it.hasNext()){
+			c = it.next();
+			totalIPFL =+ c.getOutputFlowRate();
+		}
+		return totalIPFL;
+	}
+	
 	@Override
 	protected double calculateOutputFlowRate() {
-		// TODO Auto-generated method stub
-		//the output flow rate of the turbine is the RPM
-		return RPM;
+		//OutputFlowRate = input flow rate
+		return getTotalInputFlowRate();
 	}
 
 	@Override
@@ -52,6 +68,14 @@ public class Turbine extends Component {
 				break;
 			}
 		}
+	}
+
+	public double getRPMRatio() {
+		return RPMRatio;
+	}
+
+	public void setRPMRatio(double rPMRatio) {
+		RPMRatio = rPMRatio;
 	}
 
 }
