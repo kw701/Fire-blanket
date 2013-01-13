@@ -3,6 +3,7 @@ package org.sepr.anchovy.tests;
 import static org.junit.Assert.*;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import org.junit.After;
 import org.junit.Before;
@@ -38,6 +39,21 @@ public class GameEngineTest {
 	}
 	
 	@Test
+	public void testConnectComponents(){
+		gameEngine.connectComponentTo(valve1, valve1, true);
+		
+		InfoPacket info = null;
+		Iterator<InfoPacket> it = gameEngine.getAllComponentInfo().iterator();
+		while(it.hasNext()){
+			info = it.next();
+			assert(info.namedValues.contains(new Pair<String>(Label.oPto, "Valve 1")));
+			assert(info.namedValues.contains(new Pair<String>(Label.rcIF, "Valve 1")));
+			
+		}
+		
+	}
+	
+	@Test
 	public void testSetComponentInfo(){
 		InfoPacket info = new InfoPacket();
 		info.namedValues.add(new Pair<String>(Label.cNme, "Valve 1"));
@@ -57,6 +73,35 @@ public class GameEngineTest {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+	}
+	
+	@Test
+	public void testSetupPowerPlantConfigureation(){
+		ArrayList<InfoPacket> infoList = new ArrayList<InfoPacket>();
+		
+		InfoPacket info = new InfoPacket();
+		info.namedValues.add(new Pair<String>(Label.cNme, "Valve 1"));
+		info.namedValues.add(new Pair<Boolean>(Label.psit, true));
+		info.namedValues.add(new Pair<Double>(Label.OPFL, 12.34));
+		info.namedValues.add(new Pair<String>(Label.rcIF, "Valve 2"));
+		info.namedValues.add(new Pair<String>(Label.oPto, "Valve 2"));
+		infoList.add(info);
+		
+		info = new InfoPacket();
+		info.namedValues.add(new Pair<String>(Label.cNme, "Valve 2"));
+		info.namedValues.add(new Pair<Boolean>(Label.psit, true));
+		info.namedValues.add(new Pair<Double>(Label.OPFL, 12.34));
+		info.namedValues.add(new Pair<String>(Label.oPto, "Valve 1"));
+		info.namedValues.add(new Pair<String>(Label.rcIF, "Valve 1"));
+		infoList.add(info);
+		
+		gameEngine.clearPowerPlant();
+		assert(gameEngine.getAllComponentInfo().isEmpty());
+		
+		gameEngine.setupPowerPlantConfigureation(infoList);
+		assert(gameEngine.getAllComponentInfo().equals(infoList));
+		System.out.println("HellO");
 		
 	}
 
