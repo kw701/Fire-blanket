@@ -87,8 +87,8 @@ public class GameEngine {
 		
 		//Connect components together
 		infoIt = allPowerPlantInfo.iterator();// reset the iterator TODO i think this works.
-		ArrayList<String> inputComponents = null;
-		ArrayList<String> outputComponents = null;
+		ArrayList<String> inputComponents = new ArrayList<String>();
+		ArrayList<String> outputComponents = new ArrayList<String>();
 		
 		Iterator<Pair<?>> pairIt = null;
 		Pair currentPair = null;
@@ -98,6 +98,7 @@ public class GameEngine {
 		Iterator<Component> compIt = null;
 		
 		Iterator<String> connectionNameIt = null;
+		Component attachComp = null;
 		
 		//get info for each components
 		while(infoIt.hasNext()){
@@ -114,10 +115,10 @@ public class GameEngine {
 					currentCompName = (String) currentPair.second();
 					break;
 				case rcIF:
-					inputComponents = (ArrayList<String>) currentPair.second();
+					inputComponents.add((String) currentPair.second());
 					break;
 				case oPto:
-					outputComponents = (ArrayList<String>) currentPair.second();
+					outputComponents.add((String) currentPair.second());
 					break;
 				default:
 					break;
@@ -130,12 +131,14 @@ public class GameEngine {
 			//Attach each input component to the current component.
 			connectionNameIt = inputComponents.iterator();
 			while(connectionNameIt.hasNext()){
-				connectComponentTo(currentComponent, getPowerPlantComponent(connectionNameIt.next()), true);
+				attachComp = getPowerPlantComponent(connectionNameIt.next());
+				connectComponentTo(currentComponent, attachComp, true);
 			}
 			//Attach each output component to the current compoennt
 			connectionNameIt = outputComponents.iterator();
 			while(connectionNameIt.hasNext()){
-				connectComponentTo(currentComponent, getPowerPlantComponent(connectionNameIt.next()), false);
+				attachComp =  getPowerPlantComponent(connectionNameIt.next());
+				connectComponentTo(currentComponent,attachComp, false);
 			}
 			
 			
@@ -145,13 +148,18 @@ public class GameEngine {
 		Component currentComponent = null;
 		Iterator<Component> compIt;
 		compIt = powrPlntComponents.iterator();
+		Component c = null;
+		String cName = null;
 		while(compIt.hasNext()){
-			if(compIt.next().getName() == currentCompName){
-				currentComponent = compIt.next();
+			c = compIt.next();
+			cName = c.getName();
+			if(cName.equals(currentCompName)){
+				currentComponent = c;
 			}
 		}
 		return currentComponent;
 	}
+	
 	private String getComponentNameFromInfo(InfoPacket info){
 		Iterator<Pair<?>> pairIt = info.namedValues.iterator();
 		Pair<?> pair = null;
@@ -238,8 +246,11 @@ public class GameEngine {
 	public void connectComponentTo(Component comp1, Component comp2, boolean input_ouput){
 		if(input_ouput){
 			comp1.connectToInput(comp2);
+			comp2.connectToOutput(comp1);
 		}else{
 			comp1.connectToOutput(comp2);
+			comp2.connectToInput(comp1);
+			
 		}
 	}
 	
@@ -267,8 +278,30 @@ public class GameEngine {
 	 */
 	public static void main(String[] args){
 		// TODO create the main game loop
-		GameEngine game = new GameEngine();
-		game.addComponent(new Valve("Valve 1"));
-		ArrayList<InfoPacket> info = game.getAllComponentInfo();
+		GameEngine gameEngine = new GameEngine();
+		ArrayList<InfoPacket> infoList = new ArrayList<InfoPacket>();
+		
+		InfoPacket info = new InfoPacket();
+		info.namedValues.add(new Pair<String>(Label.cNme, "Valve 1"));
+		info.namedValues.add(new Pair<Boolean>(Label.psit, true));
+		info.namedValues.add(new Pair<Double>(Label.OPFL, 12.34));
+		info.namedValues.add(new Pair<String>(Label.rcIF, "Valve 2"));
+		info.namedValues.add(new Pair<String>(Label.oPto, "Valve 2"));
+		infoList.add(info);
+		
+		info = new InfoPacket();
+		info.namedValues.add(new Pair<String>(Label.cNme, "Valve 2"));
+		info.namedValues.add(new Pair<Boolean>(Label.psit, true));
+		info.namedValues.add(new Pair<Double>(Label.OPFL, 12.34));
+		info.namedValues.add(new Pair<String>(Label.oPto, "Valve 1"));
+		info.namedValues.add(new Pair<String>(Label.rcIF, "Valve 1"));
+		infoList.add(info);
+		
+		gameEngine.clearPowerPlant();
+		assert(gameEngine.getAllComponentInfo().isEmpty());
+		
+		gameEngine.setupPowerPlantConfigureation(infoList);
+		
+		System.out.println("HellO");
 	}
 }

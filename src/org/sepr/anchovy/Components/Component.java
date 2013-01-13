@@ -66,6 +66,10 @@ public abstract class Component {
 		}
 		return info;
 	}
+	/*
+	 * Takes info to set component attributes
+	 * DOES NOT DEAL WITH COMPONENT CONNECTIONS - must be done at game engine as components can't see other components until they are connected.
+	 */
 	protected void takeSuperInfo(InfoPacket info){
 		resetConections();
 		Iterator<Pair<?>> i = info.namedValues.iterator();
@@ -80,12 +84,6 @@ public abstract class Component {
 				break;
 			case falT:
 				setFailureTime((Double) pair.second());
-				break;
-			case oPto:
-				connectToOutput((Component) pair.second());// TODO this needs working out! may need to find component from a general list of all components
-				break;
-			case rcIF:
-				connectToInput((Component) pair.second()); // TODO this needs working out! may need to find component from a general list of all components
 				break;
 			case OPFL:
 				setOuputFlowRate((Double) pair.second());	
