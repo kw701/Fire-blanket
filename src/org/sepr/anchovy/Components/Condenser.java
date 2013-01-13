@@ -61,7 +61,7 @@ public class Condenser extends Component {
 		while(it.hasNext()){
 			c = it.next();
 			if(!(c.getName().contains("Coolant"))){
-				totalInputFlowRate += c.getOutputFlowRate()
+				totalInputFlowRate += c.getOutputFlowRate();
 			}
 		}
 		if(temperature > 100){
@@ -76,7 +76,7 @@ public class Condenser extends Component {
 		if(temperature > 100){
 			wLevel = waterLevel - super.getOutputFlowRate();
 		}else{
-			wLevel = (waterLevel - super.getOutputFlowRate()) + pressure / 10
+			wLevel = (waterLevel - super.getOutputFlowRate()) + pressure / 10;
 		}
 		return wLevel;
 	}
