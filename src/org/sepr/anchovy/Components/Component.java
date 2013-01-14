@@ -7,7 +7,12 @@ import java.util.ArrayList;
 import org.sepr.anchovy.InfoPacket;
 import org.sepr.anchovy.Pair;
 import org.sepr.anchovy.Pair.Label;
-
+/**
+ * A general component, all components within the power plant are children of this class.
+ * Contains all common attributes and methods of components.
+ * 
+ * @author Harrison
+ */
 public abstract class Component {
 	private String name;
 	private int meanTimeBetweenFailure; //MTBF
@@ -15,8 +20,9 @@ public abstract class Component {
 	private Double outputFlowRate;
 	private ArrayList<Component> outputsTo;
 	private ArrayList<Component> recievesInputFrom;
-	/*
-	 * Setup the component
+	
+	/**
+	 * Setup the component ready for use, set its name and initialize the lists of components it is connected to.
 	 * @param name the name of the individual component, should be unique.
 	 */
 	public Component(String name){
@@ -28,7 +34,7 @@ public abstract class Component {
 		recievesInputFrom = new ArrayList<Component>();
 	}
 	
-	/*
+	/**
 	 * Calculates the failure time of the component normally distributed around the MTBF
 	 */
 	protected void calcRandomFailTime(){
@@ -36,15 +42,17 @@ public abstract class Component {
 		failureTime = rand.nextGaussian()* 10 + meanTimeBetweenFailure;
 	}
 	
-	/*
-	 * repairs the component
+	/**
+	 * repairs the component. will work at any time.
 	 */
 	//TODO make this procedure
 	public void repair(){
 		calcRandomFailTime();
 	}
-	/*
-	 * Create an information packet for the attributes of the general component
+	
+	/**
+	 * Create an information packet for the attributes of the general component. Usually used to get this part of the getInfo for the child componenets. 
+	 * 
 	 * @return info an information packet containing; the component name, failure time and output flow rate, output and input comonents
 	 */
 	protected InfoPacket getSuperInfo(){
@@ -66,9 +74,13 @@ public abstract class Component {
 		}
 		return info;
 	}
-	/*
-	 * Takes info to set component attributes
+	
+	/**
+	 * Assigns the vaules stored in the given info packet to the relevant attributes.
+	 * Renameing the component is possible via this method so care may be needed. 
 	 * DOES NOT DEAL WITH COMPONENT CONNECTIONS - must be done at game engine as components can't see other components until they are connected.
+	 * @param info An info packet the the component. 
+	 * 
 	 */
 	protected void takeSuperInfo(InfoPacket info){
 		resetConections();
@@ -93,50 +105,70 @@ public abstract class Component {
 		}
 	}
 	
-	/*
-	 * clears the lists of components inputing into this component and which this component outputs to.
+	/**
+	 * Clears the lists of components that this component is connected to. 
 	 */
 	protected void resetConections(){
 		outputsTo.clear();
 		recievesInputFrom.clear();
 	}
+	
 	public void setName(String name){
 		this.name = name;
 	}
 	public String getName(){ return name;}
-	/*
-	 * @param  component add the given component the the lists of components that this component outputs to.
+	
+	/**
+	 * Connects the given component to the list of components that are output to.
+	 * @param  component Component to add to outputs.
 	 */
 	public void connectToOutput(Component component){
 		outputsTo.add(component);
 	}
-	/*
-	 * @param component add the given component to the list of components that this component receives an input form
+	/**
+	 * Connects the given component to the list of components that this component recives input from.
+	 * @param component Component to add to inputs
 	 */
 	public void connectToInput(Component component){
 		recievesInputFrom.add(component);
 	}
+	
 	public void setOuputFlowRate(double outputFlowRate){
 		this.outputFlowRate = outputFlowRate;
 	}
 	public double getOutputFlowRate(){
 		return outputFlowRate;
 	}
-	/*
-	 * Create an info packet for the component - should call super.getSuperInfo()
+	
+	/**
+	 * Create an info packet containing data about all attributes for the component - should call super.getSuperInfo()
+	 * 
 	 * @return info an info packet containing all attributes for the component
 	 */
 	public abstract InfoPacket getInfo();
-	/*
+	
+	/**
 	 * By having a single calculate method, any component can be told to calculate
 	 * Without the rest of the program explicitly knowing what type of component it is.
 	 * This method should therefore call separate (more specific calculates) within the actual component.
+	 * such as calculateTemperature()
 	 */
 	public abstract void calucalte();
+	
+	/**
+	 * The only specific calculation that all components must do as every component has an output flow.
+	 * Abstract because every type of component will calculate this in a different way.
+	 * 
+	 * @return The new output flow rate
+	 */
 	protected abstract double calculateOutputFlowRate();
-	/*
-	 * Sets all attributes of a component using the given info packet
-	 * @param info info packet used to set vaules for all appributes of the component
+	
+	/**
+	 * Sets all attributes of a component using the given info packet.
+	 * Abstract as this deals with the component child specific attributes.
+	 * should call super.takeSuperInfo()
+	 * 
+	 * @param info InfoPacket defining values of attributes of the component.
 	 */
 	public abstract void takeInfo(InfoPacket info) throws Exception;
 
