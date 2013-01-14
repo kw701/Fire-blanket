@@ -6,13 +6,19 @@ import java.util.Iterator;
 import org.sepr.anchovy.InfoPacket;
 import org.sepr.anchovy.Pair;
 import org.sepr.anchovy.Pair.Label;
-
+/**
+ * This is the prepresentation of the Reactor withing the power plant.
+ * @author Harrison
+ */
 public class Reactor extends Component {
 	private double temperature;
 	private double pressure;
 	private double controlRodLevel;
 	private double waterLevel = 50;
-	
+	/**
+	 * 
+	 * @param name Unique name of component.
+	 */
 	public Reactor(String name){
 		super(name);
 	}
@@ -35,7 +41,14 @@ public class Reactor extends Component {
 		waterLevel = calculateWaterLevel();
 		super.setOuputFlowRate(calculateOutputFlowRate());
 	}
-	//Pressure = Temperature * constant <- Pressure Temperature law
+	
+	
+	/**
+	 * Calculate the temperature of the reactor.
+	 * The temperature of the reactor depends on the Control Rods.
+	 * When the are lowered, the reactor gradually cools, when they are raised the Reactor get hotter and hotter.
+	 * @return The new Temperature of the reactor.
+	 */
 	protected double calculateTemperature(){
 		//The temperature is affected by the level of the control rods, current temperature.
 		//Higher control rod level the hotter it gets.
@@ -47,6 +60,13 @@ public class Reactor extends Component {
 		}
 		return t;
 	}
+	/**
+	 * Calculate the new pressure of the reactor.
+	 * Pressure = Temperature * constant from Pressure Temperature law
+	 * 
+	 * @param oldTemp The old temperature of the reactor from last iteration.
+	 * @return The new pressure of the reactor.
+	 */
 	protected double calcuatePressure(double oldTemp){
 		// calculate pressure reletive to the current/old temperature
 		double p = pressure;
@@ -54,6 +74,11 @@ public class Reactor extends Component {
 		p = p * ratio;
 		return p;
 	}
+	/**
+	 * Calculate the water level in the reactor.
+	 * Water level = water level  + input fow rates - rate of steam production.
+	 * @return The new water level in the reacotr
+	 */
 	protected double calculateWaterLevel(){
 		//proportional to current water level + opfl and ipfl
 		double inputFlowRate = 0;
@@ -66,6 +91,7 @@ public class Reactor extends Component {
 		}
 		return (inputFlowRate + waterLevel) - super.getOutputFlowRate();
 	}
+	
 	@Override
 	protected double calculateOutputFlowRate(){
 		// OPFL is proportional to the pressure. 
