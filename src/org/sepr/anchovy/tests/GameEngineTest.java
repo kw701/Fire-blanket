@@ -46,8 +46,16 @@ public class GameEngineTest {
 		Iterator<InfoPacket> it = gameEngine.getAllComponentInfo().iterator();
 		while(it.hasNext()){
 			info = it.next();
-			assert(info.namedValues.contains(new Pair<String>(Label.oPto, "Valve 1")));
-			assert(info.namedValues.contains(new Pair<String>(Label.rcIF, "Valve 1")));
+			Iterator<Pair<?>> pIt = info.namedValues.iterator();
+			while(pIt.hasNext()){
+				if(pIt.next().getLabel() == Label.oPto){
+					assertTrue(pIt.next().second() == "Valve 1");
+				}else if(pIt.next().getLabel() == Label.rcIF){
+					assertTrue(pIt.next().second() == "Valve 1");
+				}
+				
+			}
+			
 			
 		}
 		
@@ -97,11 +105,12 @@ public class GameEngineTest {
 		infoList.add(info);
 		
 		gameEngine.clearPowerPlant();
-		assert(gameEngine.getAllComponentInfo().isEmpty());
+		assertTrue(gameEngine.getAllComponentInfo().isEmpty());
 		
 		gameEngine.setupPowerPlantConfigureation(infoList);
-		assert(gameEngine.getAllComponentInfo().equals(infoList));
-		System.out.println("HellO");
+		
+		//ArrayList<InfoPacket> allInfo =
+		assertTrue(gameEngine.getAllComponentInfo().equals(infoList));
 		
 	}
 
