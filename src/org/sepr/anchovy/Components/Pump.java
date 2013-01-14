@@ -10,17 +10,16 @@ import org.sepr.anchovy.Pair;
 import org.sepr.anchovy.Pair.Label;
 
 /**
+ * This class is the representation of the pump within the power plant.
  * @author Harrison
- *
  */
 public class Pump extends Component {
-	
 
 	private double RPM;
 	private double pumpFlowRatio = 0.5; // The ratio to which the ouput flow rate is proportional to the RPM of the pump
 	
 	/**
-	 * @param name the unique name of the component
+	 * @param name Unique name of the component
 	 */
 	public Pump(String name) {
 		super(name);
@@ -44,10 +43,11 @@ public class Pump extends Component {
 		super.setOuputFlowRate(calculateOutputFlowRate());
 	}
 
-	/* (non-Javadoc)
-	 * @see org.sepr.anchovy.Components.Component#calculateOutputFlowRate()
-	 */
+	
 	@Override
+	/**
+	 * The output flow rate of the pump is directly proportional to the RPM of the pump.
+	 */
 	protected double calculateOutputFlowRate() {
 		//The output flow rate of the pump is directly proportional to the RPM of the pump.
 		return RPM * getPumpFlowRatio(); 
