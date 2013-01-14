@@ -7,10 +7,20 @@ import org.sepr.anchovy.InfoPacket;
 import org.sepr.anchovy.Pair;
 import org.sepr.anchovy.Pair.Label;
 
+/**
+ * This class is the representation of the condesner within the power plant - This component recives steam from another component,
+ * then depending on what the state the power plant condensed it back to water to use elsewhere in the power plant.
+ * 
+ * @author Harrison
+ */
 public class Condenser extends Component {
 	private double temperature;
 	private double pressure;
 	private double waterLevel;
+	/**
+	 * Set up the power plant, most work is done in Component.
+	 * @param name The name of the component.
+	 */
 	public Condenser(String name) {
 		super(name);
 	}
@@ -33,6 +43,12 @@ public class Condenser extends Component {
 		super.setOuputFlowRate(calculateOutputFlowRate());
 
 	}
+	/**
+	 * Calculate the temperature of the condenser, 
+	 * Temperature = old temp * ratio that pressure increased or decreased by - the coolent flow rate
+	 * @param oldPressure pressure before the last calculation of pressure.
+	 * @return The new temperature.
+	 */
 	protected double calculateTemp(double oldPressure){
 		//Temperature = old temp * pressure increase/decrease raito - coolent flow rate
 		
@@ -52,6 +68,11 @@ public class Condenser extends Component {
 		return temperature * ratio - totalCoolantFlowRate;
 	}
 	
+	/**
+	 * Calculates the pressure within the condenser
+	 * Pressure  = current pressure + input flow rate of steam - output flow rate of water.
+	 * @return The new pressure
+	 */
 	protected double calculatePressure(){
 		//The pressure of the condenser is the current pressure + input flow of steam - output flow of water.
 		ArrayList<Component> inputs = super.getRecievesInputFrom();
@@ -70,6 +91,11 @@ public class Condenser extends Component {
 			return (pressure-pressure/temperature) + totalInputFlowRate - super.getOutputFlowRate();
 		}
 	}
+	/**
+	 * Calculate the water level within the condenser
+	 * water level = steam condensed + current water level - water flow rate out.
+	 * @return The new water level.
+	 */
 	protected double calculateWaterLevel(){
 		//Water level = steam condensed + water level - water out
 		double wLevel;
