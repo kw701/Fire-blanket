@@ -7,13 +7,19 @@ import org.sepr.anchovy.InfoPacket;
 import org.sepr.anchovy.Pair;
 import org.sepr.anchovy.Pair.Label;
 
+/**
+ * This is the representation of the tuebine within the poewr plant.
+ * @author Harrison
+ */
 public class Turbine extends Component {
 	private double RPM;
 	private double RPMRatio = 0.5; //Ratio governing how much of the steam flow transfers to rpm
-	
+	/**
+	 * 
+	 * @param name Unique name of the turbine.
+	 */
 	public Turbine(String name) {
 		super(name);
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
@@ -28,11 +34,20 @@ public class Turbine extends Component {
 		RPM = calculateRPM();
 		super.setOuputFlowRate(calculateOutputFlowRate());
 	}
+	/**
+	 * Calculate the RPM of the turbine
+	 * RPM is based ont he fow rate of steam in to the turbine / the ratio which energy is lost in pushing the turbine. 
+	 * @return
+	 */
 	protected double calculateRPM(){
 		//RPM is proportional to the input flow rate of steam into the turbine.
 		return getTotalInputFlowRate() / RPMRatio;
 	}
-
+	
+	/**
+	 * Get the total flow rate from components that is being input into this component.
+	 * @return Total input flow rate.
+	 */
 	private double getTotalInputFlowRate() {
 		ArrayList<Component> inputs = super.getRecievesInputFrom();
 		Iterator<Component> it = inputs.iterator();
