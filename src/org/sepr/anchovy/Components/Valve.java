@@ -11,8 +11,8 @@ import org.sepr.anchovy.Pair;
 import org.sepr.anchovy.Pair.Label;
 
 /**
+ * Representation of Valve withing the power plant.
  * @author Harrison
- *
  */
 public class Valve extends Component {
 	private Boolean position;
@@ -45,6 +45,11 @@ public class Valve extends Component {
 	 * @see org.sepr.anchovy.Component#calculateOutputFlowRate()
 	 */
 	@Override
+	/**
+	 * Ouputut fow rate of valve is directly based of of the unput flow rate.
+	 * If valve is open, output flow  = input flow
+	 * otherwise the output flow = 0.
+	 */
 	protected double calculateOutputFlowRate() {
 		if(position){
 			ArrayList<Component> recievesInputFrom = super.getRecievesInputFrom();
