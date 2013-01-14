@@ -9,6 +9,12 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import org.sepr.anchovy.io.*;
+/**
+ * Game Engine for the 'Nuclear Power Plant Simulation Game'
+ * Links all the technical components of the game together - the 'Controller' in the MVC design
+ * 
+ * @author Harrison
+ */
 public class GameEngine {
 	ArrayList<Component> powrPlntComponents = null;
 	UI ui = null;
