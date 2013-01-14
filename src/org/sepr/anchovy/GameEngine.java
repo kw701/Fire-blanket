@@ -12,10 +12,11 @@ import org.sepr.anchovy.io.*;
 public class GameEngine {
 	ArrayList<Component> powrPlntComponents = null;
 	UI ui = null;
-	/*
+	
+	/**
 	 * Constructor for the game engine
-	 * On creation it created a list to store the components of the power plant
-	 * and links to a user interface (what ever type that may be)
+	 * On creation it creates a list to store the components of the power plant
+	 * and links to a user interface (what ever type of user interface that may be)
 	 */
 	public GameEngine(){
 		powrPlntComponents = new ArrayList<Component>();
@@ -43,11 +44,11 @@ public class GameEngine {
 		}, 0, 1000);
 		*/
 	}
-	/*
+	/**
 	 * Using a list of Info Packets (generated from loading the same from file or elsewhere)
 	 * Adds each of the components described in the Info Packet list to the list of components in the power plant
 	 * Then sends the info packet to that component to initialize all its values
-	 * Once all components of the power plant are in the list, they are then all connected together in the way described by the infopackets.
+	 * Once all components of the power plant are in the list and initialized, they are then all connected together in the way described by the info packets.
 	 * 
 	 * @param allPowerPlantInfo A list of info packets containing all the information about all components to be put into the power plant.
 	 */
@@ -144,6 +145,12 @@ public class GameEngine {
 			
 		}
 	}
+	/**
+	 * Using the name of a component in the format of a string returns the actual Component found in the list of components of the Power Plant
+	 * 
+	 * @param The name of a component.
+	 * @return The component specified by the given name.
+	 */
 	private Component getPowerPlantComponent(String currentCompName) {
 		Component currentComponent = null;
 		Iterator<Component> compIt;
@@ -159,7 +166,12 @@ public class GameEngine {
 		}
 		return currentComponent;
 	}
-	
+	/**
+	 * Extracts the first component name out of an info packet.
+	 * 
+	 * @param info An info packet for a component
+	 * @return The component name contained within the given info packet.
+	 */
 	private String getComponentNameFromInfo(InfoPacket info){
 		Iterator<Pair<?>> pairIt = info.namedValues.iterator();
 		Pair<?> pair = null;
@@ -174,43 +186,44 @@ public class GameEngine {
 		
 	}
 	
-	/*
-	 * Sends an info packet a component
+	/**
+	 * Sends an info packet to a component 
 	 * the components is specified by the name of the component in the info packet.
+	 * 
 	 * @param info Info Packet to be sent to a component
 	 */
 	public void assignInfoToComponent(InfoPacket info) throws Exception{
 		String compToSendTo = null;
-		/*
-		 * going through the list of pairs to pick out the pair denoting the name of the component to sent the info to
-		 */
-		Pair<?> pair = null;
-		Iterator<Pair<?>> pi = info.namedValues.iterator();
-		Label label = null;
-		while(pi.hasNext() && compToSendTo == null){
-			pair = pi.next();
-			label = pair.getLabel();
-			switch (label){
-			case cNme:
-				compToSendTo = (String) pair.second();
-			default:
-				break;
-			}
-		}
-		/*
-		 * Going through the list of components to find the component with the matching name
-		 */
-		Iterator<Component> ci = powrPlntComponents.iterator();
-		boolean comNotFound = true;
+		
+//		Pair<?> pair = null;
+//		Iterator<Pair<?>> pi = info.namedValues.iterator();
+//		Label label = null;
+//		while(pi.hasNext() && compToSendTo == null){
+//			pair = pi.next();
+//			label = pair.getLabel();
+//			switch (label){
+//			case cNme:
+//				compToSendTo = (String) pair.second();
+//			default:
+//				break;
+//			}
+//		}
+		
+		compToSendTo = getComponentNameFromInfo(info);
+		
+//		Iterator<Component> ci = powrPlntComponents.iterator();
+//		boolean comNotFound = true;
 		Component com = null;
-		while(ci.hasNext() && comNotFound){
-			comNotFound = true;
-			com = ci.next();
-			if(com.getName() == compToSendTo){
-				comNotFound = false;
-				
-			}
-		}
+//		while(ci.hasNext() && comNotFound){
+//			comNotFound = true;
+//			com = ci.next();
+//			if(com.getName() == compToSendTo){
+//				comNotFound = false;
+//				
+//			}
+//		}
+		
+		com = getPowerPlantComponent(compToSendTo);
 		/*
 		 * if the component wasn't found throw an exception stating this
 		 */
@@ -220,6 +233,11 @@ public class GameEngine {
 			com.takeInfo(info);
 		}
 	}
+	
+	/**
+	 * Goes through the list of components one by one calling its simulate method
+	 * This should be called in a loop to get a continuous simulation. 
+	 */
 	public void runSimulation(){
 		Iterator<Component> ci = powrPlntComponents.iterator();
 		Component comp = null;
@@ -228,8 +246,10 @@ public class GameEngine {
 			comp.calucalte();
 		}
 	}
-	/*
+	
+	/**
 	 * Add a component to the list of components
+	 * 
 	 * @param component the component to be added to the list of components
 	 */
 	public void addComponent(Component component){
@@ -237,8 +257,9 @@ public class GameEngine {
 	}
 	
 	
-	/*
-	 * Connect two components together
+	/**
+	 * Connect two components together.
+	 * 
 	 * @param comp1 the component that we are working with
 	 * @param comp2 the component that will be added to comp1
 	 * @param input_output denoted whether it is an input or an output; in = true, out = false
@@ -254,6 +275,11 @@ public class GameEngine {
 		}
 	}
 	
+	/**
+	 * Get all the info from all the components within the power plant.
+	 * Used for saving and displaying info to UI.
+	 * @return List of InfoPackets for ALL components in the power plant.
+	 */
 	public ArrayList<InfoPacket> getAllComponentInfo(){
 		ArrayList<InfoPacket> allInfo = new ArrayList<InfoPacket>();
 		Iterator<Component> ci = powrPlntComponents.iterator();
@@ -265,16 +291,17 @@ public class GameEngine {
 		return allInfo;
 		
 	}
-	/*
+	
+	/**
 	 * Resets the components of the power plant to am empty list.
 	 * Will be needed for loading a power plant from file.
 	 */
 	public void clearPowerPlant(){
 		powrPlntComponents = new ArrayList<Component>();
 	}
-	/*
+	
+	/**
 	 * The main method for the game
-	 * 
 	 */
 	public static void main(String[] args){
 		// TODO create the main game loop
