@@ -34,7 +34,8 @@ public abstract class Component {
 		recievesInputFrom = new ArrayList<Component>();
 	}
 	
-	public Component(InfoPacket info){
+	public Component(String name, InfoPacket info){
+		this.name = name;
 		Pair<?> currentpair = null;
 		Iterator<Pair<?>> pi = info.namedValues.iterator();
 		Label currentlabel = null;
@@ -42,13 +43,18 @@ public abstract class Component {
 			currentpair = pi.next();
 			currentlabel = currentpair.getLabel();
 			switch (currentlabel){
-			case cNme:
-				name = (String) currentpair.second();
+			case falT:
+				failureTime = (Double) currentpair.second();
 				break;
-			case 
+			case OPFL:
+				outputFlowRate = (Double) currentpair.second();
+				break;
 			default:
 				break;
 			}
+		}
+		if(failureTime == null){ // if there was no falT Info
+			calcRandomFailTime();
 		}
 	}
 	

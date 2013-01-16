@@ -129,29 +129,24 @@ public class GameEngine {
 		//Create component list.
 		while(infoIt.hasNext()){
 			currentInfo = infoIt.next(); 
-			currentCompName = getComponentNameFromInfo(currentInfo);
-			
-			//Determine component types we are dealing with based on component name string.
+			currentCompName = getComponentNameFromInfo(currentInfo);//Determine component types we are dealing with based on component name string.
 			if(currentCompName.contains("Condenser")){
-				currentNewComponent = new Condenser(currentCompName);
+				currentNewComponent = new Condenser(currentCompName, currentInfo);
 			}else if(currentCompName.contains("Generator")){
-				currentNewComponent = new Generator(currentCompName);
+				currentNewComponent = new Generator(currentCompName, currentInfo);
 			}else if(currentCompName.contains("Pump")){
-				currentNewComponent = new Pump(currentCompName);
+				currentNewComponent = new Pump(currentCompName, currentInfo);
 			}else if(currentCompName.contains("Reactor")){
-				currentNewComponent = new Reactor(currentCompName);
+				currentNewComponent = new Reactor(currentCompName, currentInfo);
 			}else if(currentCompName.contains("Turbine")){
-				currentNewComponent = new Turbine(currentCompName);
+				currentNewComponent = new Turbine(currentCompName, currentInfo);
 			}else if(currentCompName.contains("Valve")){
-				currentNewComponent = new Valve(currentCompName);
+				currentNewComponent = new Valve(currentCompName, currentInfo);
 			}
+			// adds data to components using constructors that take InfoPackets
+			// does not add oPto, rcIF or cmpnum
 			addComponent(currentNewComponent); //add the component to the array of components in the powerplant
-			
-			try {
-				assignInfoToComponent(currentInfo); //send the just added component its info.
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+
 		}
 		
 		//Connect components together
@@ -254,51 +249,6 @@ public class GameEngine {
 		
 	}
 	
-	/**
-	 * Sends an info packet to a component 
-	 * the components is specified by the name of the component in the info packet.
-	 * 
-	 * @param info Info Packet to be sent to a component
-	 */
-	public void assignInfoToComponent(InfoPacket info, Component newcomponent) throws Exception{
-		Pair<?> currentpair = null;
-		Iterator<Pair<?>> pi = info.namedValues.iterator();
-		Label currentlabel = null;
-		while(pi.hasNext()){
-			currentpair = pi.next();
-			currentlabel = currentpair.getLabel();
-			switch (currentlabel){
-			case cNme:
-				compToSendTo = (String) currentpair.second();
-			default:
-				break;
-			}
-		}
-		
-		compToSendTo = getComponentNameFromInfo(info);
-		
-//		Iterator<Component> ci = powrPlntComponents.iterator();
-//		boolean comNotFound = true;
-		Component com = null;
-//		while(ci.hasNext() && comNotFound){
-//			comNotFound = true;
-//			com = ci.next();
-//			if(com.getName() == compToSendTo){
-//				comNotFound = false;
-//				
-//			}
-//		}
-		
-		com = getPowerPlantComponent(compToSendTo);
-		/*
-		 * if the component wasn't found throw an exception stating this
-		 */
-		if(com == null){
-			throw new Exception("The component you were trying to send info to doesn't exit");
-		}else{
-			com.takeInfo(info);
-		}
-	}
 	
 	/**
 	 * Goes through the list of components one by one calling its simulate method

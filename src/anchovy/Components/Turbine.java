@@ -21,6 +21,24 @@ public class Turbine extends Component {
 	public Turbine(String name) {
 		super(name);
 	}
+	
+	public Turbine(String name, InfoPacket info) {
+		super(name, info);
+		Pair<?> currentpair = null;
+		Iterator<Pair<?>> pi = info.namedValues.iterator();
+		Label currentlabel = null;
+		while(pi.hasNext()){
+			currentpair = pi.next();
+			currentlabel = currentpair.getLabel();
+			switch (currentlabel){
+			case RPMs:
+				RPM = (Double) currentpair.second();
+				break;
+			default:
+				break;
+			}
+		}
+	}
 
 	@Override
 	public InfoPacket getInfo() {

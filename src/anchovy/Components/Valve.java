@@ -22,6 +22,24 @@ public class Valve extends Component {
 	public Valve(String name) {
 		super(name);
 	}
+	
+	public Valve(String name, InfoPacket info) {
+		super(name, info);
+		Pair<?> currentpair = null;
+		Iterator<Pair<?>> pi = info.namedValues.iterator();
+		Label currentlabel = null;
+		while(pi.hasNext()){
+			currentpair = pi.next();
+			currentlabel = currentpair.getLabel();
+			switch (currentlabel){
+			case psit:
+				position = (Boolean) currentpair.second();
+				break;
+			default:
+				break;
+			}
+		}
+	}
 
 	/* (non-Javadoc)
 	 * @see anchovy.Component#getInfo()
