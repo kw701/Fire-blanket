@@ -121,18 +121,18 @@ public class GameEngine {
 	 * @param allPowerPlantInfo A list of info packets containing all the information about all components to be put into the power plant.
 	 */
 	public void setupPowerPlantConfigureation(ArrayList<InfoPacket> allPowerPlantInfo){
-		Iterator<InfoPacket> infoIt = allPowerPlantInfo.iterator();
-		InfoPacket currentInfo = null;
-		String currentCompName = null;
+		Iterator<InfoPacket> infoIt = allPowerPlantInfo.iterator(); // Iterator over all the components to be set up
+		InfoPacket currentInfo = null; //current InfoPacket
+		String currentCompName = null; //extracted name from InfoPacket
 		Component currentNewComponent = null;
 		
 		//Create component list.
 		while(infoIt.hasNext()){
-			currentInfo = infoIt.next();
+			currentInfo = infoIt.next(); 
 			currentCompName = getComponentNameFromInfo(currentInfo);
 			
-			//Determine component types we are dealing with.
-			if(currentCompName.contains("Consenser")){
+			//Determine component types we are dealing with based on component name string.
+			if(currentCompName.contains("Condenser")){
 				currentNewComponent = new Condenser(currentCompName);
 			}else if(currentCompName.contains("Generator")){
 				currentNewComponent = new Generator(currentCompName);
@@ -145,7 +145,7 @@ public class GameEngine {
 			}else if(currentCompName.contains("Valve")){
 				currentNewComponent = new Valve(currentCompName);
 			}
-			addComponent(currentNewComponent); //add the component to the power plant
+			addComponent(currentNewComponent); //add the component to the array of components in the powerplant
 			
 			try {
 				assignInfoToComponent(currentInfo); //send the just added component its info.
@@ -260,22 +260,20 @@ public class GameEngine {
 	 * 
 	 * @param info Info Packet to be sent to a component
 	 */
-	public void assignInfoToComponent(InfoPacket info) throws Exception{
-		String compToSendTo = null;
-		
-//		Pair<?> pair = null;
-//		Iterator<Pair<?>> pi = info.namedValues.iterator();
-//		Label label = null;
-//		while(pi.hasNext() && compToSendTo == null){
-//			pair = pi.next();
-//			label = pair.getLabel();
-//			switch (label){
-//			case cNme:
-//				compToSendTo = (String) pair.second();
-//			default:
-//				break;
-//			}
-//		}
+	public void assignInfoToComponent(InfoPacket info, Component newcomponent) throws Exception{
+		Pair<?> currentpair = null;
+		Iterator<Pair<?>> pi = info.namedValues.iterator();
+		Label currentlabel = null;
+		while(pi.hasNext()){
+			currentpair = pi.next();
+			currentlabel = currentpair.getLabel();
+			switch (currentlabel){
+			case cNme:
+				compToSendTo = (String) currentpair.second();
+			default:
+				break;
+			}
+		}
 		
 		compToSendTo = getComponentNameFromInfo(info);
 		

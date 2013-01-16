@@ -34,6 +34,24 @@ public abstract class Component {
 		recievesInputFrom = new ArrayList<Component>();
 	}
 	
+	public Component(InfoPacket info){
+		Pair<?> currentpair = null;
+		Iterator<Pair<?>> pi = info.namedValues.iterator();
+		Label currentlabel = null;
+		while(pi.hasNext()){
+			currentpair = pi.next();
+			currentlabel = currentpair.getLabel();
+			switch (currentlabel){
+			case cNme:
+				name = (String) currentpair.second();
+				break;
+			case 
+			default:
+				break;
+			}
+		}
+	}
+	
 	/**
 	 * Calculates the failure time of the component normally distributed around the MTBF
 	 */
