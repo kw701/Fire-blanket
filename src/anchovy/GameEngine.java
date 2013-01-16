@@ -515,9 +515,10 @@ public class GameEngine {
 		gameEngine.parsercommand("Valve", "Valve 2", "open");
 		gameEngine.parsercommand("Valve", "Valve 3", "open");
 		//gameEngine.parsercommand("Pump", "Pump 1", "on");
+		gameEngine.updateInterfaceComponents(gameEngine.getAllComponentInfo());
 		ArrayList<InfoPacket> testing = gameEngine.getAllComponentInfo();
 		
-		gameEngine.updateInterfaceComponents(gameEngine.getAllComponentInfo());
+		
 		gameEngine.saveGameState(gameEngine.getAllComponentInfo(), "Test.txt");
 		System.out.println("HellO");
 	}
