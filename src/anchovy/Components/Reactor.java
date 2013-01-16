@@ -55,6 +55,7 @@ public class Reactor extends Component {
 		double t = temperature;
 		if(t > 100){
 			t = t + t * ((controlRodLevel-50)/2); //If boiling lowering control rod level past 50% decreases temp otherwise it increases.
+			//TESTING UPLOAD
 		}else{
 			t = t + t * ((controlRodLevel-5)/2); //If not boiling then control rod increases temp unless fully down
 		}
