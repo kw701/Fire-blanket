@@ -33,7 +33,7 @@ public class GameEngine {
 		//ui = new UI(this); Commented out for now
 		//parser = new Parser(this);
 		
-		window = new MainWindow();
+		window = new MainWindow(this);
 	
 		
 		/*
@@ -58,58 +58,7 @@ public class GameEngine {
 		}, 0, 1000);
 		*/
 	}
-	public void parsercommand(String componentType,String componentName, String command)
-	{
-		Component component= getPowerPlantComponent(componentName);
-		InfoPacket i = new InfoPacket();
-
-					if(component.getName() == componentName)
-					{
-						i.namedValues.add(new Pair<String>(Pair.Label.cNme, component.getName()));
-							if(command=="open")
-							{
-								i.namedValues.add(new Pair<Boolean>(Pair.Label.psit, true));
-							}
-							else if(command=="close")
-							{
-								i.namedValues.add(new Pair<Boolean>(Pair.Label.psit, false));
-							}
-					}
-					else if(component.getName() == componentName)
-					{
-						
-						i.namedValues.add(new Pair<String>(Pair.Label.cNme, component.getName()));
-						if(command=="on")
-						{
-							i.namedValues.add(new Pair<Boolean>(Pair.Label.psit, true));
-						}
-						else if(command=="off")
-						{
-							i.namedValues.add(new Pair<Boolean>(Pair.Label.psit, false));
-						}
-					}
-					else if(component.getName() == componentName)
-					{
-							
-							i.namedValues.add(new Pair<String>(Pair.Label.cNme, component.getName()));
-							if(command=="lower")
-							{
-								i.namedValues.add(new Pair<Boolean>(Pair.Label.psit, true));
-							}
-							else if(command=="raise")
-							{
-								i.namedValues.add(new Pair<Boolean>(Pair.Label.psit, false));
-							}
-					}
-					else
-					{
-						System.out.println("wrong command entered");
-					}
-					try{
-						component.takeInfo(i);
-					}
-					catch(Exception e) { e.printStackTrace(); }
-			}
+	
 			
 		
 	/**
@@ -132,7 +81,7 @@ public class GameEngine {
 			currentCompName = getComponentNameFromInfo(currentInfo);
 			
 			//Determine component types we are dealing with.
-			if(currentCompName.contains("Consenser")){
+			if(currentCompName.contains("Condenser")){
 				currentNewComponent = new Condenser(currentCompName);
 			}else if(currentCompName.contains("Generator")){
 				currentNewComponent = new Generator(currentCompName);
@@ -146,7 +95,7 @@ public class GameEngine {
 				currentNewComponent = new Valve(currentCompName);
 			}
 			addComponent(currentNewComponent); //add the component to the power plant
-			
+			//TODO need to check if it's null
 			try {
 				assignInfoToComponent(currentInfo); //send the just added component its info.
 			} catch (Exception e) {
@@ -188,6 +137,7 @@ public class GameEngine {
 					break;
 				case oPto:
 					outputComponents.add((String) currentPair.second());
+
 					break;
 				default:
 					break;
@@ -511,13 +461,11 @@ public class GameEngine {
 		assert(gameEngine.getAllComponentInfo().isEmpty());
 		
 		gameEngine.setupPowerPlantConfigureation(infoList);
-		gameEngine.parsercommand("Valve", "Valve 1", "close");
-		gameEngine.parsercommand("Valve", "Valve 2", "open");
-		gameEngine.parsercommand("Valve", "Valve 3", "open");
+		//gameEngine.parsercommand("Valve", "Valve 1", "close");
+		//gameEngine.parsercommand("Valve", "Valve 2", "open");
+		//gameEngine.parsercommand("Valve", "Valve 3", "open");
 		//gameEngine.parsercommand("Pump", "Pump 1", "on");
 		gameEngine.updateInterfaceComponents(gameEngine.getAllComponentInfo());
-		ArrayList<InfoPacket> testing = gameEngine.getAllComponentInfo();
-		
 		
 		gameEngine.saveGameState(gameEngine.getAllComponentInfo(), "Test.txt");
 		System.out.println("HellO");

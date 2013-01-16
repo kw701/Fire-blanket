@@ -16,13 +16,17 @@ import javax.swing.Box;
 //import java.awt.TextArea;
 import javax.swing.JScrollPane;
 //import javax.swing.ScrollPaneConstants;
-import javax.swing.JPanel;
+//import javax.swing.JPanel;
 import java.awt.Dimension;
 import javax.swing.JTextField;
 
 import javax.swing.JTextArea;
+import javax.swing.text.DefaultCaret;
+
 import java.awt.Insets;
-import javax.swing.ScrollPaneConstants;
+//import javax.swing.ScrollPaneConstants;
+
+import anchovy.GameEngine;
 /**
  * Class responsible for the user interface. Creates 3 text areas and a single line input that acts like a command line.
  * User interacts through console object and updateLeftPanel and updateRightPanel functions. Everything else is taken care of.
@@ -46,7 +50,7 @@ public class MainWindow
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					MainWindow window = new MainWindow();
+					MainWindow window = new MainWindow(null);
 					window.frmFireBlanket.setVisible(true);
 					
 				} catch (Exception e) {
@@ -59,9 +63,9 @@ public class MainWindow
 	/**
 	 * Create the application.
 	 */
-	public MainWindow() 
+	public MainWindow(GameEngine engine) 
 	{
-		initializeInterface();
+		initializeInterface(engine);
 		frmFireBlanket.pack();
 		frmFireBlanket.setVisible(true);
 	}
@@ -86,7 +90,8 @@ public class MainWindow
 	/**
 	 * Initialize the look and contents of the frame. Big horrible function.
 	 */
-	private void initializeInterface() {
+	private void initializeInterface(GameEngine engine) 
+	{
 		frmFireBlanket = new JFrame();
 		frmFireBlanket.setResizable(false);
 		frmFireBlanket.setMinimumSize(new Dimension(460, 500));
@@ -150,6 +155,10 @@ public class MainWindow
 		CommandlineOutput.setLineWrap(true);
 		CommandlineOutput.setWrapStyleWord(true);
 		
+		//TODO get this sorted out
+		DefaultCaret caret = (DefaultCaret)CommandlineOutput.getCaret();
+		caret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
+		
 		JScrollPane scrollPane = new JScrollPane(CommandlineOutput);
 		scrollPane.setBorder(null);
 		scrollPane.setPreferredSize(new Dimension(450, 110));
@@ -196,7 +205,7 @@ public class MainWindow
 		
 		JMenuItem mntmHighScores = new JMenuItem("High scores");
 		mnOptions.add(mntmHighScores);
-		console = new Console(Commandline, CommandlineOutput);
+		console = new Console(Commandline, CommandlineOutput, new Parser(engine));
 		//Hooking up all the events to action listeners.
 		Commandline.addActionListener(console);
 	}

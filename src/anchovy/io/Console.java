@@ -10,14 +10,14 @@ import javax.swing.JTextField;
  * @author Tadas
  *
  */
-public class Console/*<T>*/ implements ActionListener
+public class Console implements ActionListener
 {
 	
-	Console(JTextField textField, JTextArea output/*, T parser*/)
+	Console(JTextField textField, JTextArea output, Parser prsr)
 	{
 		txtField = textField;
 		txtArea = output;
-		//T = prsr;
+		parser = prsr;
 	}
 	/**
 	 * Gets automatically called when user presses enter with the text field in focus. Essentially just moves the text from the input area to output area.
@@ -30,7 +30,9 @@ public class Console/*<T>*/ implements ActionListener
 		String text = txtField.getText();
 		
 		writeToConsole('>' + text);
-		//prsr.parse(text);
+		String parserOutput = parser.parse(text);
+		if(parserOutput.length() != 0)
+			writeToConsole(parserOutput);
 		txtField.setText("");
 		
 	}
@@ -44,5 +46,6 @@ public class Console/*<T>*/ implements ActionListener
 	}
 	private JTextField txtField;
 	private JTextArea txtArea;
-	/*private T prsr;*/
+	private Parser parser;
+	
 }

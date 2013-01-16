@@ -1,0 +1,37 @@
+Name of component/Valve 1
+FailuerTime/2.28079193169853
+Output flow rate/12.34
+Outputs to/Valve 2
+Recieves input from/Valve 2
+Position/true
+#Name of component/Valve 2
+FailuerTime/2.140870020812761
+Output flow rate/12.34
+Outputs to/Valve 1
+Outputs to/Valve 2
+Outputs to/Valve 2
+Outputs to/Valve 3
+Outputs to/Valve 3
+Outputs to/Valve 3
+Recieves input from/Valve 1
+Recieves input from/Valve 2
+Recieves input from/Valve 3
+Recieves input from/Valve 2
+Recieves input from/Valve 3
+Recieves input from/Valve 3
+Position/false
+#Name of component/Valve 3
+FailuerTime/8.804532059715573
+Output flow rate/12.34
+Outputs to/Valve 2
+Outputs to/Valve 3
+Outputs to/Valve 2
+Outputs to/Valve 3
+Outputs to/Valve 2
+Recieves input from/Valve 2
+Recieves input from/Valve 2
+Recieves input from/Valve 3
+Recieves input from/Valve 2
+Recieves input from/Valve 3
+Position/false
+#
