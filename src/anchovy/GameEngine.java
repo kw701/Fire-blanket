@@ -476,7 +476,7 @@ public class GameEngine {
 		}
 		
 	}
-	public String readfile(String file)
+	public void readfile(String file)throws FileNotFoundException
 	{
 		//FileReader fr=new FileReader(path);
 		//BufferedReader br=new BufferedReader(fr);
@@ -489,7 +489,7 @@ public class GameEngine {
 		
 		ArrayList<InfoPacket> infoList = new ArrayList<InfoPacket>();
 		int c=0;
-		try()
+		try
 		{
 			while (br.readLine()!= null)
 		{
@@ -538,14 +538,16 @@ public class GameEngine {
 		{
 			System.out.println("Exception ");
 		}
-
+		setupPowerPlantConfigureation(infoList);
 	}
-	setupPowerPlantConfigureation(ArrayList<InfoPacket> allPowerPlantInfo)
-}
+	
+	
+
 	/**
 	 * The main method for the game
 	 */
-	public static void main(String[] args){
+	public static void main(String[] args)throws FileNotFoundException
+	{
 		// TODO create the main game loop
 		GameEngine gameEngine = new GameEngine();
 		ArrayList<InfoPacket> infoList = new ArrayList<InfoPacket>();
@@ -585,7 +587,8 @@ public class GameEngine {
 		
 		gameEngine.updateInterfaceComponents(gameEngine.getAllComponentInfo());
 		gameEngine.saveGameState(gameEngine.getAllComponentInfo(), "Test.txt");
-		gameEngine.readfile("test.txt");
+		gameEngine.readfile("Test.txt");
+		gameEngine.saveGameState(gameEngine.getAllComponentInfo(), "test1.txt");
 		
 		System.out.println("HellO");
 	}
