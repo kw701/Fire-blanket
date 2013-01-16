@@ -1,14 +1,17 @@
 package anchovy;
 
 
+import java.awt.EventQueue;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Timer;
 import java.util.TimerTask;
-
+import java.io.*;
+//import java.util.*;
 import anchovy.Components.*;
 import anchovy.Pair.Label;
 import anchovy.io.*;
+//import anchovy.io.Parser;
 /**
  * Game Engine for the 'Nuclear Power Plant Simulation Game'
  * Links all the technical components of the game together - the 'Controller' in the MVC design
@@ -16,9 +19,10 @@ import anchovy.io.*;
  * @author Harrison
  */
 public class GameEngine {
-	ArrayList<Component> powrPlntComponents = null;
-	UI ui = null;
-	
+	public ArrayList<Component> powrPlntComponents = null;
+	//Parser parser;
+	//UI ui = null; Commented out for now
+	MainWindow window;
 	/**
 	 * Constructor for the game engine
 	 * On creation it creates a list to store the components of the power plant
@@ -26,7 +30,11 @@ public class GameEngine {
 	 */
 	public GameEngine(){
 		powrPlntComponents = new ArrayList<Component>();
-		ui = new UI(this);
+		//ui = new UI(this); Commented out for now
+		//parser = new Parser(this);
+		
+		window = new MainWindow();
+	
 		
 		/*
 		final Timer gameLoop = new Timer();
@@ -50,6 +58,60 @@ public class GameEngine {
 		}, 0, 1000);
 		*/
 	}
+	public void parsercommand(String componentType,String componentName, String command)
+	{
+		Component component= getPowerPlantComponent(componentName);
+		InfoPacket i = new InfoPacket();
+
+					if(component.getName() == componentName)
+					{
+						i.namedValues.add(new Pair<String>(Pair.Label.cNme, component.getName()));
+							if(command=="open")
+							{
+								i.namedValues.add(new Pair<Boolean>(Pair.Label.psit, true));
+							}
+							else if(command=="close")
+							{
+								i.namedValues.add(new Pair<Boolean>(Pair.Label.psit, false));
+							}
+					}
+					else if(component.getName() == componentName)
+					{
+						
+						i.namedValues.add(new Pair<String>(Pair.Label.cNme, component.getName()));
+						if(command=="on")
+						{
+							i.namedValues.add(new Pair<Boolean>(Pair.Label.psit, true));
+						}
+						else if(command=="off")
+						{
+							i.namedValues.add(new Pair<Boolean>(Pair.Label.psit, false));
+						}
+					}
+					else if(component.getName() == componentName)
+					{
+							
+							i.namedValues.add(new Pair<String>(Pair.Label.cNme, component.getName()));
+							if(command=="lower")
+							{
+								i.namedValues.add(new Pair<Boolean>(Pair.Label.psit, true));
+							}
+							else if(command=="raise")
+							{
+								i.namedValues.add(new Pair<Boolean>(Pair.Label.psit, false));
+							}
+					}
+					else
+					{
+						System.out.println("wrong command entered");
+					}
+					try{
+						component.takeInfo(i);
+					}
+					catch(Exception e) { e.printStackTrace(); }
+			}
+			
+		
 	/**
 	 * Using a list of Info Packets (generated from loading the same from file or elsewhere)
 	 * Adds each of the components described in the Info Packet list to the list of components in the power plant
@@ -132,7 +194,7 @@ public class GameEngine {
 				}
 			}
 			
-			//Get the component that we are going to conect other components to.
+			//Get the component that we are going to connect other components to.
 			currentComponent = getPowerPlantComponent(currentCompName);
 			
 			//Attach each input component to the current component.
@@ -157,7 +219,7 @@ public class GameEngine {
 	 * @param The name of a component.
 	 * @return The component specified by the given name.
 	 */
-	private Component getPowerPlantComponent(String currentCompName) {
+	public Component getPowerPlantComponent(String currentCompName) {
 		Component currentComponent = null;
 		Iterator<Component> compIt;
 		compIt = powrPlntComponents.iterator();
@@ -307,6 +369,112 @@ public class GameEngine {
 	}
 	
 	/**
+	 * Updates interface with the latest changes to all the components.
+	 * @param packets Info about all the components in the game
+	 */
+	public void updateInterfaceComponents(ArrayList<InfoPacket> packets)
+	{
+		String nonmodifiable = new String();
+		String modifiable = new String();
+		Iterator<InfoPacket> packetIter = packets.iterator();
+		InfoPacket pckt = null;
+		//All info gathered about a component
+		String componentName = new String();
+		String componentDescriptionModi = new String();
+		String componentDescriptionNon = new String();
+		while(packetIter.hasNext())
+		{
+			
+			pckt = packetIter.next();
+			Iterator<Pair<?>> namedValueIter = pckt.namedValues.iterator();
+			while(namedValueIter.hasNext())
+			{
+				Pair<?> pair = namedValueIter.next();
+				Label currentLabel = pair.getLabel();
+				
+				switch (currentLabel){
+				case cNme:
+					componentName = (String) pair.second() + '\n';
+					break;
+				case rcIF:
+					componentDescriptionNon += "Gets inputs from: " + pair.second().toString() + '\n';
+					break;
+				case oPto:
+					componentDescriptionNon += "Outputs to: " + pair.second().toString() + '\n';
+					break;
+				case temp:
+					componentDescriptionNon += "Temperature: " + pair.second().toString() + '\n';
+					break;
+				case pres:
+					componentDescriptionNon += "Pressure: " + pair.second().toString() + '\n';
+					break;
+				case coRL:
+					componentDescriptionModi += "Control rod level: " + pair.second().toString() + '\n';
+					break;
+				case wLvl:
+					componentDescriptionNon += "Water level: " + pair.second().toString() + '\n';
+					break;
+				case RPMs:
+					componentDescriptionModi += "RPMs: " + pair.second().toString() + '\n';
+					break;
+				case psit:
+					componentDescriptionModi += "Position: " + pair.second().toString() + '\n';
+					break;
+				case elec:
+					componentDescriptionNon += "Electricity generated: " + pair.second().toString() + '\n';
+					break;
+				case OPFL:
+					componentDescriptionNon += "Output flow rate: " + pair.second().toString() + '\n';
+					break;
+				default:
+					break;
+				}
+				
+			}
+			if(componentDescriptionNon.length() != 0 && componentName.length() != 0)
+				nonmodifiable += componentName + componentDescriptionNon;
+			if(componentDescriptionModi.length() != 0 && componentName.length() != 0)
+				modifiable += componentName + componentDescriptionModi;
+			componentName = "";
+			componentDescriptionNon = "";
+			componentDescriptionModi = "";
+		}
+		window.updateLeftPanel(nonmodifiable);
+		window.updateRightPanel(modifiable);
+		
+	}
+	
+	public void saveGameState(ArrayList<InfoPacket> packets, String fileName)
+	{
+		String output = new String();
+		
+		Iterator<InfoPacket> packetIter = packets.iterator();
+		InfoPacket pckt = null;
+		while(packetIter.hasNext())
+		{
+			
+			pckt = packetIter.next();
+			Iterator<Pair<?>> namedValueIter = pckt.namedValues.iterator();
+			while(namedValueIter.hasNext())
+			{
+				Pair<?> pair = namedValueIter.next();
+				
+				output += pair.first() + '/' + pair.second().toString() + '\n';
+			}
+		}
+		try {
+			BufferedWriter out = new BufferedWriter(new FileWriter("test.txt"));
+			out.write(output);
+			System.out.println(output);
+			out.close();
+		}
+		catch (IOException e)
+		{
+			System.out.println("Exception ");		
+		}
+		
+	}
+	/**
 	 * The main method for the game
 	 */
 	public static void main(String[] args){
@@ -324,17 +492,31 @@ public class GameEngine {
 		
 		info = new InfoPacket();
 		info.namedValues.add(new Pair<String>(Label.cNme, "Valve 2"));
-		info.namedValues.add(new Pair<Boolean>(Label.psit, true));
+		info.namedValues.add(new Pair<Boolean>(Label.psit, false));
 		info.namedValues.add(new Pair<Double>(Label.OPFL, 12.34));
-		info.namedValues.add(new Pair<String>(Label.oPto, "Valve 1"));
-		info.namedValues.add(new Pair<String>(Label.rcIF, "Valve 1"));
+		info.namedValues.add(new Pair<String>(Label.oPto, "Valve 3"));
+		info.namedValues.add(new Pair<String>(Label.rcIF, "Valve 3"));
+		infoList.add(info);
+		
+		info = new InfoPacket();
+		info.namedValues.add(new Pair<String>(Label.cNme, "Valve 3"));
+		info.namedValues.add(new Pair<Boolean>(Label.psit, false));
+		info.namedValues.add(new Pair<Double>(Label.OPFL, 12.34));
+		info.namedValues.add(new Pair<String>(Label.oPto, "Valve 2"));
+		info.namedValues.add(new Pair<String>(Label.rcIF, "Valve 2"));
 		infoList.add(info);
 		
 		gameEngine.clearPowerPlant();
 		assert(gameEngine.getAllComponentInfo().isEmpty());
 		
 		gameEngine.setupPowerPlantConfigureation(infoList);
+		gameEngine.parsercommand("Valve", "Valve 1", "close");
+		gameEngine.parsercommand("Valve", "Valve 2", "open");
+		gameEngine.parsercommand("Valve", "Valve 3", "open");
+		//gameEngine.parsercommand("Pump", "Pump 1", "on");
 		
+		gameEngine.updateInterfaceComponents(gameEngine.getAllComponentInfo());
+		gameEngine.saveGameState(gameEngine.getAllComponentInfo(), "Test.txt");
 		System.out.println("HellO");
 	}
 }
