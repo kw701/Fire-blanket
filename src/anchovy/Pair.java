@@ -25,6 +25,7 @@ public class Pair<T> {
 		oPto("Outputs to"),
 		rcIF("Recieves input from"),
 		elec("Electrisity Generated"),
+		cmpnum("Component number"),
 		etc("Feel free to add more stuff;" +
 				"it should have the enum term 4-char long to keep the convention");
 		
