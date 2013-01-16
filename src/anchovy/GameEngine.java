@@ -461,6 +461,7 @@ public class GameEngine {
 				
 				output += pair.first() + '/' + pair.second().toString() + '\n';
 			}
+			output += '#';
 		}
 		try {
 			BufferedWriter out = new BufferedWriter(new FileWriter("test.txt"));
@@ -514,6 +515,7 @@ public class GameEngine {
 		gameEngine.parsercommand("Valve", "Valve 2", "open");
 		gameEngine.parsercommand("Valve", "Valve 3", "open");
 		//gameEngine.parsercommand("Pump", "Pump 1", "on");
+		ArrayList<InfoPacket> testing = gameEngine.getAllComponentInfo();
 		
 		gameEngine.updateInterfaceComponents(gameEngine.getAllComponentInfo());
 		gameEngine.saveGameState(gameEngine.getAllComponentInfo(), "Test.txt");
