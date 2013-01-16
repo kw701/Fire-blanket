@@ -1,6 +1,7 @@
 package anchovy;
 
-
+import java.io.FileReader;
+import java.io.BufferedReader;
 import java.awt.EventQueue;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -461,6 +462,7 @@ public class GameEngine {
 				
 				output += pair.first() + '/' + pair.second().toString() + '\n';
 			}
+			output+= '#';
 		}
 		try {
 			BufferedWriter out = new BufferedWriter(new FileWriter("test.txt"));
@@ -474,6 +476,72 @@ public class GameEngine {
 		}
 		
 	}
+	public String readfile(String file)
+	{
+		//FileReader fr=new FileReader(path);
+		//BufferedReader br=new BufferedReader(fr);
+		FileInputStream fstream = new FileInputStream(file);
+  // Get the object of DataInputStream
+  DataInputStream in = new DataInputStream(fstream);
+  BufferedReader br = new BufferedReader(new InputStreamReader(in));
+		
+		
+		
+		ArrayList<InfoPacket> infoList = new ArrayList<InfoPacket>();
+		int c=0;
+		try()
+		{
+			while (br.readLine()!= null)
+		{
+			c++;
+			br.close();
+		}
+		String[ ] textData = new String[c];
+		int i=0;
+		while (br.readLine() != null)
+		{
+		textData[ i ] = br.readLine();
+		String ch=textData[i].substring(0, textData[i].indexOf("/"));
+		InfoPacket info = new InfoPacket();
+		if(ch=="Name of Component")
+		{
+		    String c1=textData[i].substring(textData[i].indexOf("/"),textData[i].length());
+		    info.namedValues.add(new Pair<String>(Label.cNme, c1));
+		}
+		
+	    else if(ch =="FaileurTime")
+		{
+		    String d=textData[i].substring(textData[i].indexOf("/")+1,textData[i].length());
+		    Float i1=Float.parseFloat(d);
+		    info.namedValues.add(new Pair<Float>(Label.falT, i1));
+		  }
+		else if(ch=="Output flow rate")
+		
+		{
+		    String d=textData[i].substring(textData[i].indexOf("/")+1,textData[i].length());
+		    Float i1=Float.parseFloat(d);
+		    info.namedValues.add(new Pair<Float>(Label.OPFL, i1));
+		    
+		  }
+		else if(ch=="Position")
+		{
+		    String d=textData[i].substring(textData[i].indexOf("/"),textData[i].length());
+		    boolean ok = Boolean.parseBoolean(d);
+		    info.namedValues.add(new Pair<Boolean>(Label.psit, ok));
+		  }
+		  i++;
+		  infoList.add(info);
+		}
+		
+		}
+		catch(IOException e)
+		{
+			System.out.println("Exception ");
+		}
+
+	}
+	setupPowerPlantConfigureation(ArrayList<InfoPacket> allPowerPlantInfo)
+}
 	/**
 	 * The main method for the game
 	 */
@@ -512,11 +580,13 @@ public class GameEngine {
 		gameEngine.setupPowerPlantConfigureation(infoList);
 		gameEngine.parsercommand("Valve", "Valve 1", "close");
 		gameEngine.parsercommand("Valve", "Valve 2", "open");
-		gameEngine.parsercommand("Valve", "Valve 3", "open");
+		//gameEngine.parsercommand("Valve", "Valve 3", "open");
 		//gameEngine.parsercommand("Pump", "Pump 1", "on");
 		
 		gameEngine.updateInterfaceComponents(gameEngine.getAllComponentInfo());
 		gameEngine.saveGameState(gameEngine.getAllComponentInfo(), "Test.txt");
+		gameEngine.readfile("test.txt");
+		
 		System.out.println("HellO");
 	}
 }
