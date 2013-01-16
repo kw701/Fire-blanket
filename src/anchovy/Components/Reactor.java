@@ -41,8 +41,8 @@ public class Reactor extends Component {
 		waterLevel = calculateWaterLevel();
 		super.setOuputFlowRate(calculateOutputFlowRate());
 	}
-	
-	
+
+
 	/**
 	 * Calculate the temperature of the reactor.
 	 * The temperature of the reactor depends on the Control Rods.
@@ -55,7 +55,6 @@ public class Reactor extends Component {
 		double t = temperature;
 		if(t > 100){
 			t = t + t * ((controlRodLevel-50)/2); //If boiling lowering control rod level past 50% decreases temp otherwise it increases.
-			//TESTING UPLOAD
 		}else{
 			t = t + t * ((controlRodLevel-5)/2); //If not boiling then control rod increases temp unless fully down
 		}
@@ -92,7 +91,7 @@ public class Reactor extends Component {
 		}
 		return (inputFlowRate + waterLevel) - super.getOutputFlowRate();
 	}
-	
+
 	@Override
 	protected double calculateOutputFlowRate(){
 		// OPFL is proportional to the pressure. 
@@ -109,16 +108,16 @@ public class Reactor extends Component {
 			label = pair.getLabel();
 			switch (label){
 			case temp:
-				temperature = (Double) pair.second();
+				setTemperature((Double) pair.second());
 				break;
 			case pres:
-				pressure = (Double) pair.second();
+				setPressure((Double) pair.second());
 				break;
 			case coRL:
-				controlRodLevel = (Double) pair.second();
+				setControlRodLevel((Double) pair.second());
 				break;
 			case wLvl:
-				waterLevel = (Double) pair.second();
+				setWaterLevel((Double) pair.second());
 				break;
 			default:
 				// should this do anything by default?
@@ -147,7 +146,12 @@ public class Reactor extends Component {
 	}
 
 	public void setControlRodLevel(double controlRodLevel) {
-		this.controlRodLevel = controlRodLevel;
+		if (controlRodLevel > 100)
+			this.controlRodLevel =100;
+		else if (controlRodLevel < 0)
+			this.controlRodLevel = 0;
+		else
+			this.controlRodLevel = controlRodLevel;
 	}
 
 	public double getWaterLevel() {
@@ -157,5 +161,5 @@ public class Reactor extends Component {
 	public void setWaterLevel(double waterLevel) {
 		this.waterLevel = waterLevel;
 	}
-	
+
 }
