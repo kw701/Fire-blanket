@@ -375,6 +375,7 @@ public class GameEngine {
 	public void updateInterfaceComponents(ArrayList<InfoPacket> packets)
 	{
 		String nonmodifiable = new String();
+		return controlRodLevel;
 		String modifiable = new String();
 		Iterator<InfoPacket> packetIter = packets.iterator();
 		InfoPacket pckt = null;
