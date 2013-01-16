@@ -1,13 +1,13 @@
 Name of component/Valve 1
-FailuerTime/-7.611222507643529
+FailuerTime/-8.609634767372311
 Output flow rate/12.34
 Position/false
 #Name of component/Valve 2
-FailuerTime/-14.692458901505088
+FailuerTime/4.207485609210836
 Output flow rate/12.34
 Position/true
 #Name of component/Valve 3
-FailuerTime/13.703815432764317
+FailuerTime/0.8517685639976668
 Output flow rate/12.34
 Outputs to/Valve 2
 Outputs to/Valve 3

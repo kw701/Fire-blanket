@@ -481,9 +481,9 @@ public class GameEngine {
 		//FileReader fr=new FileReader(path);
 		//BufferedReader br=new BufferedReader(fr);
 		FileInputStream fstream = new FileInputStream(file);
-  // Get the object of DataInputStream
-  DataInputStream in = new DataInputStream(fstream);
-  BufferedReader br = new BufferedReader(new InputStreamReader(in));
+		// Get the object of DataInputStream
+		DataInputStream in = new DataInputStream(fstream);
+		BufferedReader br = new BufferedReader(new InputStreamReader(in));
 		
 		
 		
@@ -507,6 +507,7 @@ public class GameEngine {
 		{
 		    String c1=textData[i].substring(textData[i].indexOf("/"),textData[i].length());
 		    info.namedValues.add(new Pair<String>(Label.cNme, c1));
+		    System.out.println(ch+ "="+ c1);
 		}
 		
 	    else if(ch =="FaileurTime")
@@ -514,6 +515,7 @@ public class GameEngine {
 		    String d=textData[i].substring(textData[i].indexOf("/")+1,textData[i].length());
 		    Float i1=Float.parseFloat(d);
 		    info.namedValues.add(new Pair<Float>(Label.falT, i1));
+		    System.out.println(ch+ "="+ i1);
 		  }
 		else if(ch=="Output flow rate")
 		
@@ -521,13 +523,14 @@ public class GameEngine {
 		    String d=textData[i].substring(textData[i].indexOf("/")+1,textData[i].length());
 		    Float i1=Float.parseFloat(d);
 		    info.namedValues.add(new Pair<Float>(Label.OPFL, i1));
-		    
+		    System.out.println(ch+ "="+ i1);
 		  }
 		else if(ch=="Position")
 		{
 		    String d=textData[i].substring(textData[i].indexOf("/"),textData[i].length());
 		    boolean ok = Boolean.parseBoolean(d);
 		    info.namedValues.add(new Pair<Boolean>(Label.psit, ok));
+		    System.out.println(ch+ "="+ ok);
 		  }
 		  i++;
 		  infoList.add(info);
@@ -539,6 +542,7 @@ public class GameEngine {
 			System.out.println("Exception ");
 		}
 		setupPowerPlantConfigureation(infoList);
+		
 	}
 	
 	
