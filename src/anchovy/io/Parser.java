@@ -10,53 +10,54 @@ class parser
 	{
 		engine = Engine;
 	}
-public void parsercommand(String componentType,String componentName, String command)
+public String parsercommand(String componentType,String componentName, String command)
 {
 	Component component= engine.getPowerPlantComponent(componentName);
-
-				if(component.getName() =="valve")
-				{
-					InfoPacket i = new InfoPacket();
-					i.namedValues.add(new Pair<String>(Pair.Label.cNme,  component.getName()));
-						if(command=="open")
-						{
-							i.namedValues.add(new Pair<Boolean>(Pair.Label.psit, true));
-						}
-						else
-						{
+	String result = "";
+	if(component.getName() =="valve")
+	{
+		InfoPacket i = new InfoPacket();
+		i.namedValues.add(new Pair<String>(Pair.Label.cNme,  component.getName()));
+		if(command=="open")
+		{
+			i.namedValues.add(new Pair<Boolean>(Pair.Label.psit, true));
+		}
+		else
+		{
 							i.namedValues.add(new Pair<Boolean>(Pair.Label.psit, false));
-						}
-				}
-				else if(component.getName() =="pump")
+		}
+	}
+	else if(component.getName() =="pump")
+			{
+				InfoPacket i = new InfoPacket();
+				i.namedValues.add(new Pair<String>(Pair.Label.cNme, component.getName()));
+				if(command=="on")
 				{
-					InfoPacket i = new InfoPacket();
-					i.namedValues.add(new Pair<String>(Pair.Label.cNme, component.getName()));
-					if(command=="on")
-					{
-						i.namedValues.add(new Pair<Boolean>(Pair.Label.psit, true));
-					}
-					else
-					{
-						i.namedValues.add(new Pair<Boolean>(Pair.Label.psit, false));
-					}
-				}
-				else if(component.getName() =="rods")
-				{
-						InfoPacket i = new InfoPacket();
-						i.namedValues.add(new Pair<String>(Pair.Label.cNme, component.getName()));
-						if(command=="lower")
-						{
-							i.namedValues.add(new Pair<Boolean>(Pair.Label.psit, true));
-						}
-						else
-						{
-							i.namedValues.add(new Pair<Boolean>(Pair.Label.psit, false));
-						}
+					i.namedValues.add(new Pair<Boolean>(Pair.Label.psit, true));
 				}
 				else
 				{
-					System.out.println("wrong command entered");
+					i.namedValues.add(new Pair<Boolean>(Pair.Label.psit, false));
+				}
+			}
+			else if(component.getName() =="rods")
+			{
+				InfoPacket i = new InfoPacket();
+				i.namedValues.add(new Pair<String>(Pair.Label.cNme, component.getName()));
+				if(command=="lower")
+				{
+					i.namedValues.add(new Pair<Boolean>(Pair.Label.psit, true));
+				}
+				else
+				{
+					i.namedValues.add(new Pair<Boolean>(Pair.Label.psit, false));
 				}
 		}
-		
-	}
+		else
+		{
+			result = "Invalid input";
+		}
+	return "Cows";	
+}
+}
+
