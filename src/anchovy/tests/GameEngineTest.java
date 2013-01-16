@@ -82,6 +82,9 @@ public class GameEngineTest {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		assertTrue("Valve 1"==valve1.getName());
+		assertTrue(valve1.getPosition());
+		assertTrue(12.34==valve1.getOutputFlowRate());
 		
 	}
 	
