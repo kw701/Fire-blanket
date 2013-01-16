@@ -68,6 +68,7 @@ public class GameEngineTest {
 		info.namedValues.add(new Pair<String>(Label.cNme, "Valve 1"));
 		info.namedValues.add(new Pair<Boolean>(Label.psit, true));
 		info.namedValues.add(new Pair<Double>(Label.OPFL, 12.34));
+		ArrayList<InfoPacket> plantList = new ArrayList<InfoPacket>();
 		
 		try {
 			valve1.takeInfo(info);
@@ -77,7 +78,7 @@ public class GameEngineTest {
 		}
 		
 		try {
-			gameEngine.assignInfoToComponent(info);
+			gameEngine.setupPowerPlantConfigureation(plantList);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -107,11 +108,11 @@ public class GameEngineTest {
 		info.namedValues.add(new Pair<String>(Label.oPto, "Valve 1"));
 		info.namedValues.add(new Pair<String>(Label.rcIF, "Valve 1"));
 		infoList.add(info);
-		
 		gameEngine.clearPowerPlant();
+		gameEngine.setupPowerPlantConfigureation(infoList);
 		assertTrue(gameEngine.getAllComponentInfo().isEmpty());
 		
-		gameEngine.setupPowerPlantConfigureation(infoList);
+		
 		
 		//ArrayList<InfoPacket> allInfo =
 		assertTrue(gameEngine.getAllComponentInfo().equals(infoList));
