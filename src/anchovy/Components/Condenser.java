@@ -24,6 +24,30 @@ public class Condenser extends Component {
 	public Condenser(String name) {
 		super(name);
 	}
+	
+	public Condenser(String name, InfoPacket info){
+		super(name, info);
+		Pair<?> currentpair = null;
+		Iterator<Pair<?>> pi = info.namedValues.iterator();
+		Label currentlabel = null;
+		while(pi.hasNext()){
+			currentpair = pi.next();
+			currentlabel = currentpair.getLabel();
+			switch (currentlabel){
+			case temp:
+				temperature = (Double) currentpair.second();
+				break;
+			case pres:
+				pressure = (Double) currentpair.second();
+				break;
+			case wLvl:
+				waterLevel = (Double) currentpair.second();
+				break;
+			default:
+				break;
+			}
+		}
+	}
 
 	@Override
 	public InfoPacket getInfo() {
