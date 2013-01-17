@@ -23,6 +23,24 @@ public class Generator extends Component {
 		super(name);
 	}
 	
+	public Generator(String name, InfoPacket info){
+		super(name, info);
+		Pair<?> currentpair = null;
+		Iterator<Pair<?>> pi = info.namedValues.iterator();
+		Label currentlabel = null;
+		while(pi.hasNext()){
+			currentpair = pi.next();
+			currentlabel = currentpair.getLabel();
+			switch (currentlabel){
+			case elec:
+				electrisityGenerated = (Double) currentpair.second();
+				break;
+			default:
+				break;
+			}
+		}
+	}
+	
 	@Override
 	public InfoPacket getInfo() {
 		InfoPacket info = super.getSuperInfo();

@@ -34,6 +34,30 @@ public abstract class Component {
 		recievesInputFrom = new ArrayList<Component>();
 	}
 	
+	public Component(String name, InfoPacket info){
+		this.name = name;
+		Pair<?> currentpair = null;
+		Iterator<Pair<?>> pi = info.namedValues.iterator();
+		Label currentlabel = null;
+		while(pi.hasNext()){
+			currentpair = pi.next();
+			currentlabel = currentpair.getLabel();
+			switch (currentlabel){
+			case falT:
+				failureTime = (Double) currentpair.second();
+				break;
+			case OPFL:
+				outputFlowRate = (Double) currentpair.second();
+				break;
+			default:
+				break;
+			}
+		}
+		if(failureTime == null){ // if there was no falT Info
+			calcRandomFailTime();
+		}
+	}
+	
 	/**
 	 * Calculates the failure time of the component normally distributed around the MTBF
 	 */

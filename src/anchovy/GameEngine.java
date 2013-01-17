@@ -1,6 +1,6 @@
 package anchovy;
 
-
+//MORE TESTING
 import java.awt.EventQueue;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -121,37 +121,32 @@ public class GameEngine {
 	 * @param allPowerPlantInfo A list of info packets containing all the information about all components to be put into the power plant.
 	 */
 	public void setupPowerPlantConfigureation(ArrayList<InfoPacket> allPowerPlantInfo){
-		Iterator<InfoPacket> infoIt = allPowerPlantInfo.iterator();
-		InfoPacket currentInfo = null;
-		String currentCompName = null;
+		Iterator<InfoPacket> infoIt = allPowerPlantInfo.iterator(); // Iterator over all the components to be set up
+		InfoPacket currentInfo = null; //current InfoPacket
+		String currentCompName = null; //extracted name from InfoPacket
 		Component currentNewComponent = null;
 		
 		//Create component list.
 		while(infoIt.hasNext()){
-			currentInfo = infoIt.next();
-			currentCompName = getComponentNameFromInfo(currentInfo);
-			
-			//Determine component types we are dealing with.
-			if(currentCompName.contains("Consenser")){
-				currentNewComponent = new Condenser(currentCompName);
+			currentInfo = infoIt.next(); 
+			currentCompName = getComponentNameFromInfo(currentInfo);//Determine component types we are dealing with based on component name string.
+			if(currentCompName.contains("Condenser")){
+				currentNewComponent = new Condenser(currentCompName, currentInfo);
 			}else if(currentCompName.contains("Generator")){
-				currentNewComponent = new Generator(currentCompName);
+				currentNewComponent = new Generator(currentCompName, currentInfo);
 			}else if(currentCompName.contains("Pump")){
-				currentNewComponent = new Pump(currentCompName);
+				currentNewComponent = new Pump(currentCompName, currentInfo);
 			}else if(currentCompName.contains("Reactor")){
-				currentNewComponent = new Reactor(currentCompName);
+				currentNewComponent = new Reactor(currentCompName, currentInfo);
 			}else if(currentCompName.contains("Turbine")){
-				currentNewComponent = new Turbine(currentCompName);
+				currentNewComponent = new Turbine(currentCompName, currentInfo);
 			}else if(currentCompName.contains("Valve")){
-				currentNewComponent = new Valve(currentCompName);
+				currentNewComponent = new Valve(currentCompName, currentInfo);
 			}
-			addComponent(currentNewComponent); //add the component to the power plant
-			
-			try {
-				assignInfoToComponent(currentInfo); //send the just added component its info.
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+			// adds data to components using constructors that take InfoPackets
+			// does not add oPto, rcIF or cmpnum
+			addComponent(currentNewComponent); //add the component to the array of components in the powerplant
+
 		}
 		
 		//Connect components together
@@ -254,53 +249,6 @@ public class GameEngine {
 		
 	}
 	
-	/**
-	 * Sends an info packet to a component 
-	 * the components is specified by the name of the component in the info packet.
-	 * 
-	 * @param info Info Packet to be sent to a component
-	 */
-	public void assignInfoToComponent(InfoPacket info) throws Exception{
-		String compToSendTo = null;
-		
-//		Pair<?> pair = null;
-//		Iterator<Pair<?>> pi = info.namedValues.iterator();
-//		Label label = null;
-//		while(pi.hasNext() && compToSendTo == null){
-//			pair = pi.next();
-//			label = pair.getLabel();
-//			switch (label){
-//			case cNme:
-//				compToSendTo = (String) pair.second();
-//			default:
-//				break;
-//			}
-//		}
-		
-		compToSendTo = getComponentNameFromInfo(info);
-		
-//		Iterator<Component> ci = powrPlntComponents.iterator();
-//		boolean comNotFound = true;
-		Component com = null;
-//		while(ci.hasNext() && comNotFound){
-//			comNotFound = true;
-//			com = ci.next();
-//			if(com.getName() == compToSendTo){
-//				comNotFound = false;
-//				
-//			}
-//		}
-		
-		com = getPowerPlantComponent(compToSendTo);
-		/*
-		 * if the component wasn't found throw an exception stating this
-		 */
-		if(com == null){
-			throw new Exception("The component you were trying to send info to doesn't exit");
-		}else{
-			com.takeInfo(info);
-		}
-	}
 	
 	/**
 	 * Goes through the list of components one by one calling its simulate method
